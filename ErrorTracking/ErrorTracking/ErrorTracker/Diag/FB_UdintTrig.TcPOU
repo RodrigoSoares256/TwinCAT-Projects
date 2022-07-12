@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="FB_UdintTrig" Id="{fc5fcc48-b681-4638-be88-fc6128cbbdae}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_UdintTrig
+VAR_INPUT
+	uiIn:UDINT;
+END_VAR
+VAR_OUTPUT
+	bOut: BOOL;
+
+END_VAR
+VAR
+	uiOld:UDINT;
+	tAllowNewErr:TON;
+	bFirst:BOOL:=TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+bOut:= uiIn <> uiOld AND tAllowNewErr.Q AND NOT bFirst;
+tAllowNewErr(IN:=uiIn = uiOld , PT:= T#5S);
+uiOld:=uiIn;
+bFirst:=FALSE;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_UdintTrig">
+      <LineId Id="37" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="35" Count="1" />
+      <LineId Id="33" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

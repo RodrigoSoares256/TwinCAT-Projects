@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="toHMI" Id="{f0d7b935-d42f-4748-a2f8-e72fea8e4788}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	aEvents:ARRAY[1..80] OF  ST_ReadEvent;
+END_VAR
+VAR_GLOBAL CONSTANT
+	nLastHistAlarm:UINT:=50;
+END_VAR
+VAR_GLOBAL PERSISTENT
+	aHist:ARRAY[1..nLastHistAlarm] OF stAlarmHist;			//alarm history
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

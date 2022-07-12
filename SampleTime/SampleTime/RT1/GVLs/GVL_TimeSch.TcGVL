@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <GVL Name="GVL_TimeSch" Id="{f9bc8956-ef9c-45a4-ba3d-a0902c555d52}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL CONSTANT
+	cNumberOfEventSchedules:UINT:=8;//Quantidade de eventos necessarios/programados
+(*Não alterar os valores daqui em diante*)
+	ciSunday:WORD:=0;				//domingo
+	ciMonday:WORD:=1;				//segunda
+	ciTuesday:WORD:=2;				//terça
+	ciWednesday:WORD:=3;			//quarta
+	ciThursday:WORD:=4;				//quinta
+	ciFriday:WORD:=5;				//sexta
+	ciSaturday:WORD:=6;				//sabado
+END_VAR
+VAR_GLOBAL
+	//Data e hora atuais
+	actualDate:TIMESTRUCT;				//Data/Hora autais
+	sActualDate: STRING;				(*String com a data atual*)
+	sActualTime: STRING;				(*String com a hora atual*)
+	sWeekDay:STRING;					(*Dia da semana*)
+	//Acertar a hora
+	timeToInsert: TIMESTRUCT;			//Hora a inserir (acertar hora)
+	bUpdateTime: BOOL;					(*Atualizar a hora*)
+	bUpdateDate: BOOL;					(*Atualizar a data*)
+	(*Estrutura contendo a data e hora a serem inseridas*)	
+	//Variaveis especificas da programacao horaria
+	abOutScheduler:ARRAY[1..cNumberOfEventSchedules] OF BOOL;//Variaveis ativadas pelo bloco de programacao horaria
+	uiIndexToCheck:UINT:=1;									//Index
+	abErr:ARRAY[1..cNumberOfEventSchedules] OF BOOL;		//Erro na programacao horaria
+	asErr:ARRAY[1..cNumberOfEventSchedules] OF STRING;		//
+	bTurnOffOutput: BOOL;									//Desliga a saida dos blocos de 
+END_VAR
+VAR_GLOBAL PERSISTENT
+	aTimeToSchActivate:ARRAY[0..6,1..cNumberOfEventSchedules] OF stTimeToSchedule3;		//Hora de ativar
+	aTimeToSchDeactivate:ARRAY[0..6,1..cNumberOfEventSchedules] OF stTimeToSchedule3;	//Hora de desativar
+END_VAR
+//GVL_TimeSchBABR]]></Declaration>
+  </GVL>
+</TcPlcObject>

@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.6">
+  <POU Name="FB_TimeHandler" Id="{cea85683-7ecf-4923-aa61-b091ade83b68}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TimeHandler
+VAR_INPUT
+	bDisplaySecond:BOOL;			(*Mostra os segundos na variavel de saida de hora*)
+	bShowDateNumberFormat:BOOL;	(*Mostra a data em formato numerico (e.g.: 01/01/1970)*)
+END_VAR
+VAR_OUTPUT
+	sActualMonth: STRING;			(*Mes do ano*)
+	sWeekDay:STRING;				(*Dia da semana*)
+	sActualTime:STRING;				(*Hora*)
+	sActualDate:STRING;				(*Data atual*)
+	outStruct:TIMESTRUCT;
+END_VAR
+VAR
+	getTime:FB_LocalSystemTime;		(*Obtem a data/hora do sistema*)
+	sSecond: STRING;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+(*Obtem a hora do Windows*)
+getTime(
+	sNetID:='' ,
+	bEnable:=TRUE ,
+	dwCycle:= ,
+	dwOpt:= ,
+	tTimeout:= ,
+	bValid=> ,
+	tzID=> );
+
+ASetStrings();
+outStruct:=getTime.systemTime;]]></ST>
+    </Implementation>
+    <Action Name="ASetStrings" Id="{d713e711-4e93-4a74-a6e1-0963f6e44b34}">
+      <Implementation>
+        <ST><![CDATA[IF getTime.bValid THEN
+	CASE getTime.systemTime.wMonth OF
+		1:
+			sActualMonth:='Janeiro';
+		2:
+			sActualMonth:='Fevereiro';
+		3:
+			sActualMonth:='Março';
+		4:
+			sActualMonth:='Abril';
+		5:
+			sActualMonth:='Maio';
+		6:
+			sActualMonth:='Junho';
+		7:
+			sActualMonth:='Julho';
+		8:
+			sActualMonth:='Agosto';
+		9:
+			sActualMonth:='Setembro';
+		10:
+			sActualMonth:='Outubro';
+		11:
+			sActualMonth:='Novembro';
+		12:
+			sActualMonth:='Dezembro';
+	END_CASE
+
+	CASE getTime.systemTime.wDayOfWeek OF
+		0:
+			sWeekDay:='Domingo';
+		1:
+			sWeekDay:='Segunda';
+		2:
+			sWeekDay:='Terça';
+		3:
+			sWeekDay:='Quarta';
+		4:
+			sWeekDay:='Quinta';
+		5:
+			sWeekDay:='Sexta';
+		6:
+			sWeekDay:='Sabado';
+	END_CASE
+	sSecond:=SEL(getTime.systemTime.wSecond<10,WORD_TO_STRING(getTime.systemTime.wSecond),CONCAT('0',WORD_TO_STRING(getTime.systemTime.wSecond)));
+
+	sActualTime:=CONCAT(WORD_TO_STRING(getTime.systemTime.wHour),CONCAT(':',CONCAT(WORD_TO_STRING(getTime.systemTime.wMinute),SEL(bDisplaySecond,'',CONCAT(':',sSecond)))));
+
+	IF NOT bShowDateNumberFormat THEN
+		sActualDate:=CONCAT(WORD_TO_STRING(getTime.systemTime.wDay),CONCAT(' de ',CONCAT(sActualMonth,CONCAT(' de ' ,WORD_TO_STRING(getTime.systemTime.wYear)))));
+	ELSE
+		sActualDate:=CONCAT(WORD_TO_STRING(getTime.systemTime.wDay),CONCAT('/',CONCAT(WORD_TO_STRING(getTime.systemTime.wMonth),CONCAT('/',WORD_TO_STRING(getTime.systemTime.wYear)))));
+	END_IF
+ELSE
+	sActualDate:='????';
+	sActualTime:='????';
+	sWeekDay:='????';
+	sActualMonth:='????';
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+  </POU>
+</TcPlcObject>

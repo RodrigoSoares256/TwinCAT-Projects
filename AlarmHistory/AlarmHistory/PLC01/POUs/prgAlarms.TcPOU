@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="prgAlarms" Id="{83097bec-8bbc-4645-9cc5-ef18e5c8c869}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgAlarms
+VAR
+	abAlarm: ARRAY[1..iNumAlarm] OF BOOL;
+	aFBAlarm:ARRAY[1..iNumAlarm] OF FB_SimpleAdsLogEvent;
+	i: INT;
+	readEvents:FB_AdsReadEvents;
+	bReadEvents: BOOL := TRUE;
+	iNumEvents: UDINT;
+	//Alarm Histtory
+	alarmHistCtrl:FB_AlarmHistCtrl;
+END_VAR
+VAR CONSTANT
+	iNumAlarm:INT:=54;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:=1 TO iNumAlarm DO
+	aFBAlarm[i](
+		SourceID:=1100 , 
+		EventID:= i, 
+		bSetEvent:= abAlarm[i], 
+		bQuit:= fromHMI.bIhmReset, 
+		ErrId=> , 
+		Error=> );
+END_FOR
+
+readEvents(
+	sNetId:= '', 
+	bReadEvents:= bReadEvents, 
+	nLanguageId:= 1033, 
+	eDateAndTimeFormat:= E_DATEANDTIMEFORMAT.de_DE, 
+	tRefreshTime:=T#1S , 
+	tTimeout:=T#10S , 
+	aEvents=> toHMI.aEvents, 
+	nNumberOfEvents=> iNumEvents, 
+	bBusy=> , 
+	bDone=> , 
+	bError=> , 
+	nErrId=> );
+
+alarmHistCtrl(ptHist:= ADR(toHMI.aHist), ptActiveAlarms:=ADR(toHMI.aEvents));]]></ST>
+    </Implementation>
+    <LineIds Name="prgAlarms">
+      <LineId Id="22" Count="24" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

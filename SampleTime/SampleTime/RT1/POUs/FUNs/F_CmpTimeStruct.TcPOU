@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.6">
+  <POU Name="F_CmpTimeStruct" Id="{4d909eb0-3d9e-4b52-b4b5-1df6b7d7e498}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CmpTimeStruct : BOOL
+VAR_INPUT
+	time1:TIMESTRUCT;
+	time2:TIMESTRUCT;
+END_VAR
+VAR
+END_VAR
+(*Esta funcao verifica se a TimeStruct fornecida é válida
+a variavel "time1"devera ser maior que a  variavel "time2" para que a funcao seja verdadeira*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_CmpTimeStruct:= SYSTEMTIME_TO_DT( time1)>SYSTEMTIME_TO_DT( time2);]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

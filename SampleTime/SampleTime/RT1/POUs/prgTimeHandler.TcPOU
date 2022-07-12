@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="prgTimeHandler" Id="{f4dc0c25-3ee8-4c0b-8a86-0d4cf37fbf51}" SpecialFunc="None">
+    <Declaration><![CDATA[(*
+	Programa realiza o gerenciamento da programacao horaria
+	Esta rotina deve ser chamada no "MAIN" 
+*)
+PROGRAM prgTimeHandler
+VAR
+	timeScheduler:ARRAY[1..GVL_TimeSch.cNumberOfEventSchedules] OF FB_BasicTimeScheduler;
+	i: UINT;
+	timer:FB_TimeHandler;				(*Obtem a hora do sistema*)
+	updateTime:FB_UpdateTime;			(*Bloco *)
+	sActualTime: STRING;
+	dt1: DATE_AND_TIME;
+	timeMeter:FB_HourMeter;
+	taskInfo: PlcTaskSystemInfo;
+	bError: BOOL;
+	sErr: STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Le a data / Hora do sistema*)
+timer(
+	bDisplaySecond:= TRUE, 
+	bShowDateNumberFormat:= TRUE, 
+	sWeekDay=> GVL_TimeSch.sWeekDay, 
+	sActualTime=> GVL_TimeSch.sActualTime, 
+	sActualDate=> GVL_TimeSch.sActualDate, 
+	outStruct=> GVL_TimeSch.actualDate);
+
+(*Responsavel por atualizar a data/hora do sistema*)
+updateTime(
+	timeToInsert:= GVL_TimeSch.timeToInsert ,
+	actualTime:= GVL_TimeSch.actualDate,
+	bUpdateTime:= GVL_TimeSch.bUpdateTime,
+	bUpdateDate:= GVL_TimeSch.bUpdateDate,
+	bError=> ,
+	iErrorId=> );
+
+(*blocos de programacao horaria*)
+FOR i := 1 TO GVL_TimeSch.cNumberOfEventSchedules DO
+	timeScheduler[i](
+		timeToActivate:= GVL_TimeSch.aTimeToSchActivate[GVL_TimeSch.actualDate.wDayOfWeek,i], 
+		timeToDeactivate:= GVL_TimeSch.aTimeToSchDeactivate[GVL_TimeSch.actualDate.wDayOfWeek,i], 
+		actualTime:= GVL_TimeSch.actualDate,
+		bTurnOffOutput:= GVL_TimeSch.bTurnOffOutput,
+		bErr=> GVL_TimeSch.abErr[i],
+		sErr=> GVL_TimeSch.asErr[i],
+		bOut=> GVL_TimeSch.abOutScheduler[i]);
+END_FOR
+
+
+taskInfo:=_TaskInfo[1];
+
+sActualTime:=F_DT_ToString(dt1);
+
+GVL_TimeMeter.currTaskTime:= UDINT_TO_LREAL(taskInfo.CycleTime)/10E6;
+
+timeMeter(
+	enableCount:= GVL_TimeMeter.enableTimeCount, 
+	resetCount:= GVL_TimeMeter.resetTimeCount, 
+	cycleTime:= GVL_TimeMeter.currTaskTime, 
+	bError=>bError, 
+	sErr=> sErr, 
+	pastTime:=GVL_TimeMeter.hourCounting );
+	
+
+
+
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgTimeHandler">
+      <LineId Id="3" Count="27" />
+      <LineId Id="41" Count="0" />
+      <LineId Id="80" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="44" Count="0" />
+      <LineId Id="78" Count="1" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="60" Count="5" />
+      <LineId Id="57" Count="0" />
+      <LineId Id="68" Count="1" />
+      <LineId Id="74" Count="0" />
+      <LineId Id="73" Count="0" />
+      <LineId Id="72" Count="0" />
+      <LineId Id="71" Count="0" />
+      <LineId Id="70" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

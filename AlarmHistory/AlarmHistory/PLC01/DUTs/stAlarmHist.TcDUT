@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="stAlarmHist" Id="{8812fa7d-3ca2-4850-b58b-5fba1ae93fd1}">
+    <Declaration><![CDATA[TYPE stAlarmHist :
+STRUCT
+	sDate:STRING(23);
+	sTime:STRING(23);
+	sMessage:STRING;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

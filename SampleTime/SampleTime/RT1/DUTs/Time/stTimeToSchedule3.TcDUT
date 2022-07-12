@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <DUT Name="stTimeToSchedule3" Id="{eaaaff64-a3d2-4352-a2d7-984d795275f9}">
+    <Declaration><![CDATA[TYPE stTimeToSchedule3 :
+STRUCT
+	bUse:BOOL;			(*Relevante para desligar TRUE==>> nao desligar*)
+	wHour:WORD;			(*Hora exata em que a saida sera acionada/desacionada*)
+	wMinute:WORD;		(*Minuto exato em que a saida sera acionada/desacionada*)
+	wSecond:WORD;		(*Segundo exato em que a saida sera acionada/desacionada*)	
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

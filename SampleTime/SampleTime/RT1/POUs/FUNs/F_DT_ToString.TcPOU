@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.12">
+  <POU Name="F_DT_ToString" Id="{927214c1-1be2-4b2e-8062-ad6190bfce41}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DT_ToString : STRING
+VAR_INPUT
+	in:DATE_AND_TIME;
+END_VAR
+VAR
+	tsDtToConvert:TIMESTRUCT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[tsDtToConvert:= DT_TO_SYSTEMTIME(in);
+
+F_DT_ToString:= CONCAT(WORD_TO_STRING(tsDtToConvert.wDay),'/');
+F_DT_ToString:= CONCAT(F_DT_ToString, CONCAT( WORD_TO_STRING(tsDtToConvert.wMonth),'/'));
+F_DT_ToString:= CONCAT(F_DT_ToString, CONCAT( WORD_TO_STRING(tsDtToConvert.wYear),'/'));
+F_DT_ToString:= CONCAT(F_DT_ToString, ' ');
+F_DT_ToString:= CONCAT(F_DT_ToString, CONCAT( WORD_TO_STRING(tsDtToConvert.wHour),':'));
+F_DT_ToString:= CONCAT(F_DT_ToString, CONCAT( WORD_TO_STRING(tsDtToConvert.wMinute),':'));
+F_DT_ToString:= CONCAT(F_DT_ToString,  WORD_TO_STRING(tsDtToConvert.wSecond));]]></ST>
+    </Implementation>
+    <LineIds Name="F_DT_ToString">
+      <LineId Id="10" Count="2" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

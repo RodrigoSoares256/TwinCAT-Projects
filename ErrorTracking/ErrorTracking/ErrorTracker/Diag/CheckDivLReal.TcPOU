@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <POU Name="CheckDivLReal" Id="{cd2f5ddd-2b3b-408d-9b93-d6b47e103165}" SpecialFunc="CheckDivReal64">
+    <Declaration><![CDATA[// Implicitly generated code : DO NOT EDIT
+FUNCTION CheckDivLReal : LREAL
+VAR_INPUT
+	divisor:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Implicitly generated code : Only an Implementation suggestion
+{noflow}
+IF divisor = 0 THEN
+	CheckDivLReal:=1;
+	G_Diag.uiCheckDivReal:=G_Diag.uiCheckDivReal+1;
+ELSE
+	CheckDivLReal:=divisor;
+END_IF;
+{flow}
+]]></ST>
+    </Implementation>
+    <LineIds Name="CheckDivLReal">
+      <LineId Id="7" Count="3" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="11" Count="3" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

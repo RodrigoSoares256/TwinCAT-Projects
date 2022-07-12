@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="prgDiag" Id="{b30fec6f-e938-4bbd-9e10-394c169234e9}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgDiag
+VAR
+	aErrTrig:ARRAY[E_ErrType.eFirStErr..E_ErrType.eLastErr] OF FB_UdintTrig;
+	taskInfo:PlcTaskSystemInfo;
+	
+	horaAtual: DT;
+	uiECatState AT %I*:UINT;
+	localTyme:FB_LocalSystemTime;
+	trigECAT:R_TRIG;
+	timeStartup: TON := (PT := TIME#2S0MS);
+	
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[timeStartup(IN:= TRUE);
+
+IF NOT timeStartup.Q THEN
+	RETURN;
+END_IF
+
+localTyme(
+	sNetID:= '', 
+	bEnable:= TRUE, 
+	dwCycle:= , 
+	dwOpt:= , 
+	tTimeout:= , 
+	bValid=> , 
+	systemTime=> , 
+	tzID=> );
+
+
+taskInfo := _TaskInfo[1];
+
+aErrTrig[E_ErrType.eCheckBoundsErr](uiIn:=G_Diag.uiCheckBound);
+aErrTrig[E_ErrType.eCheckDivDint](uiIn:=G_Diag.uiCheckDivDint);
+aErrTrig[E_ErrType.eCheckDivLint](uiIn:=G_Diag.uiCheckDivLint);
+aErrTrig[E_ErrType.eCheckDivReal](uiIn:=G_Diag.uiCheckDivReal);
+aErrTrig[E_ErrType.eCheckRange](uiIn:=G_Diag.uiCheckRange);
+aErrTrig[E_ErrType.eCheckPointer](uiIn:=G_Diag.uiCheckPointer);
+
+
+horaAtual:=SYSTEMTIME_TO_DT(localTyme.systemTime);	//==> colocar a hora do sistema aqui 
+{Region "Checks"}
+IF aErrTrig[E_ErrType.eCheckBoundsErr].bOut THEN
+	M_InsertOnList(eErrInsert:=E_ErrType.eCheckBoundsErr , hora:=horaAtual );
+END_IF
+IF aErrTrig[E_ErrType.eCheckDivDint].bOut THEN
+	M_InsertOnList(eErrInsert:=E_ErrType.eCheckDivDint , hora:=horaAtual );	
+END_IF
+IF aErrTrig[E_ErrType.eCheckDivLint].bOut THEN
+	M_InsertOnList(eErrInsert:= E_ErrType.eCheckDivLint, hora:=horaAtual );	
+END_IF
+IF aErrTrig[E_ErrType.eCheckDivReal].bOut THEN
+	M_InsertOnList(eErrInsert:= E_ErrType.eCheckDivReal, hora:=horaAtual );	
+END_IF
+IF aErrTrig[E_ErrType.eCheckRange].bOut THEN
+	M_InsertOnList(eErrInsert:=E_ErrType.eCheckRange , hora:=horaAtual );	
+END_IF
+IF aErrTrig[E_ErrType.eCheckPointer].bOut THEN
+	M_InsertOnList(eErrInsert:= E_ErrType.eCheckPointer, hora:=horaAtual );	
+END_IF
+{endregion}
+
+{Region "EtherCAT"}
+	trigECAT(CLK:=uiECatState <> 0);
+	IF trigECAT.Q THEN
+		 M_InsertOnList(eErrInsert:= E_ErrType.eEtherCATErr, hora:=horaAtual );
+		 G_Diag.uiECatState:=uiECatState;
+	END_IF
+{endregion}
+
+{Region "Runtime"}
+	IF taskInfo.CycleTimeExceeded THEN
+		G_Diag.uiRuntimeErr:=G_Diag.uiRuntimeErr+1;
+		M_InsertOnList(eErrInsert:= E_ErrType.eRuntimeErr, hora:=horaAtual );	
+	END_IF
+{endregion}
+]]></ST>
+    </Implementation>
+    <Method Name="M_InsertOnList" Id="{6132d4d1-b921-4097-99af-1c7983ff1f92}">
+      <Declaration><![CDATA[METHOD M_InsertOnList : BOOL
+VAR_INPUT
+	eErrInsert:E_ErrType;
+	hora:DT;
+END_VAR
+
+VAR
+	i: UINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[FOR i := 100 TO 2 BY -1 DO
+	G_Diag.aErrList[i]:=G_Diag.aErrList[i-1];
+END_FOR
+G_Diag.aErrList[1].eErrType:=eErrInsert;
+G_Diag.aErrList[1].horario:=hora;
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="prgDiag">
+      <LineId Id="78" Count="0" />
+      <LineId Id="82" Count="0" />
+      <LineId Id="81" Count="0" />
+      <LineId Id="83" Count="1" />
+      <LineId Id="79" Count="0" />
+      <LineId Id="66" Count="7" />
+      <LineId Id="63" Count="2" />
+      <LineId Id="16" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="4" />
+      <LineId Id="61" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="34" Count="1" />
+      <LineId Id="37" Count="1" />
+      <LineId Id="36" Count="0" />
+      <LineId Id="40" Count="1" />
+      <LineId Id="39" Count="0" />
+      <LineId Id="43" Count="1" />
+      <LineId Id="42" Count="0" />
+      <LineId Id="46" Count="1" />
+      <LineId Id="45" Count="0" />
+      <LineId Id="49" Count="1" />
+      <LineId Id="48" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="75" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="53" Count="0" />
+      <LineId Id="77" Count="0" />
+      <LineId Id="54" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="32" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+      <LineId Id="55" Count="0" />
+      <LineId Id="58" Count="0" />
+      <LineId Id="56" Count="0" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+    <LineIds Name="prgDiag.M_InsertOnList">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="1" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="15" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

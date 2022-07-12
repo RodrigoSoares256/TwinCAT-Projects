@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <GVL Name="G_Diag" Id="{5bd5d895-ef54-49b9-b5ce-f1665aa2383c}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL PERSISTENT
+	uiCheckBound:UDINT;
+	uiCheckDivDint:UDINT;
+	uiCheckDivLint:UDINT;
+	uiCheckDivReal:UDINT;
+	uiCheckRange:UDINT;
+	uiCheckPointer:UDINT;
+	uiErrEtherCAT:UDINT;
+	uiRuntimeErr:UDINT;
+	aErrList:ARRAY[1..uiMaxNumOfErr] OF stErrType;
+	uiECatState:UINT;
+END_VAR
+VAR_GLOBAL CONSTANT
+	uiMaxNumOfErr:UINT:=100;
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

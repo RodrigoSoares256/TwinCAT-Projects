@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.6">
+  <POU Name="F_CmpTimeSchedule" Id="{c7799ba5-419f-4f2c-b1c8-7626f51be361}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_CmpTimeSchedule : BOOL
+VAR_INPUT
+	timeToActivate:stTimeToSchedule2;	(*Hora para ligar a saida*)
+	timeToDeactivate:stTimeToSchedule2;	(*Hora para desligar a saida*)
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_CmpTimeSchedule:=(timeToDeactivate.wHour>timeToActivate.wHour) OR ((timeToDeactivate.wHour = timeToActivate.wHour) AND (timeToDeactivate.wMinute> timeToActivate.wMinute));]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.9">
+  <POU Name="MAIN" Id="{3ad06a0b-d0de-4cb6-a41a-d10b92c01dcc}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	i1,i2:INT;
+	i3:INT:=5;
+END_VAR
+//An UPS is necessary to save the persistent Data, if it's not available other options are also possible, such as:
+//Save to retain data / text files/Databases or simple use the FB_WritePersistentData and soon as a new error occur to make sure it's gonna be persistent
+//Note : leaving Checks activated on a running machine can have negative effects on the performance
+//As you find out what's the problem you should also remove checks from your code
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//Here we call the program which handles the diagnosis
+//
+prgDiag();
+
+i1:=i2/i3;
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="7" Count="1" />
+      <LineId Id="2" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

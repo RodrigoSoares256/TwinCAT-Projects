@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_HourMeter" Id="{5d6cc970-8e64-4417-a8a0-d2d7a58fd2bd}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_HourMeter
+VAR_INPUT
+	enableCount: BOOL;	//this variable enables the time count
+	resetCount:BOOL;	//set it to true in order to reset the whole count
+	cycleTime:LREAL;	//cycle time in seconds
+END_VAR
+VAR_OUTPUT
+	bError:BOOL;
+	sErr:STRING;
+END_VAR
+VAR_IN_OUT
+	pastTime:LREAL;	//Variable that contains the time past, should be persistent/retain outside the block otherwise the time count will not 
+					//be kept once the PLC is stopped
+END_VAR
+VAR
+	m:BOOL;			//memory to activate the rising trigger to reset the counter
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF enableCount AND cycleTime>0.0 THEN
+	pastTime:= pastTime + cycleTime/3600;
+	bError:=FALSE;
+	sErr:='';
+ELSIF cycleTime <=0 THEN
+	bError:=TRUE;
+	sErr:= 'wrong configured time';
+END_IF
+
+
+IF resetCount AND NOT m THEN
+	pastTime:=0;
+END_IF
+m := resetCount;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_HourMeter">
+      <LineId Id="9" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="32" Count="1" />
+      <LineId Id="27" Count="1" />
+      <LineId Id="31" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="25" Count="1" />
+      <LineId Id="21" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

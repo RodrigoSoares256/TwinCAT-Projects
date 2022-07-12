@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_BasicTimeScheduler" Id="{9fc60f99-2740-4330-a1df-e63c2ce6f7ed}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BasicTimeScheduler
+VAR_INPUT
+	timeToActivate:stTimeToSchedule3;		//Hora para ativar a saída
+	timeToDeactivate:stTimeToSchedule3;		//Hora para desativar a saída
+	actualTime:TIMESTRUCT;					//Hora/Data atual
+	bTurnOffOutput:BOOL;					//Desliga a saída imediatamente
+END_VAR
+VAR_OUTPUT
+	bErr: BOOL;
+	sErr:STRING;
+	bOut:BOOL;
+END_VAR
+VAR
+	timeToActivateR_TRIG:R_TRIG;
+	timeToDeactivateR_TRIG:R_TRIG;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[sErr:='';
+bErr:=FALSE;
+IF NOT M_CheckTimeSchedule(timeToActivate) OR NOT (M_CheckTimeSchedule(timeToDeactivate) OR NOT timeToDeactivate.bUse) THEN
+	bErr:=TRUE;
+	sErr:='Parâmetros invalidos';
+END_IF
+
+timeToActivateR_TRIG(CLK:= M_CmpTimeStr_Schedule(actualTime,timeToActivate));
+timeToDeactivateR_TRIG(CLK:= M_CmpTimeStr_Schedule(actualTime,timeToDeactivate));
+
+IF timeToActivateR_TRIG.Q AND NOT bTurnOffOutput AND NOT bErr AND timeToActivate.bUse THEN
+	bOut:=TRUE;
+END_IF
+IF timeToDeactivateR_TRIG.Q AND timeToDeactivate.bUse THEN
+	bOut:=FALSE;
+END_IF
+IF bTurnOffOutput THEN
+	bOut:=FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <Method Name="M_CheckTimeSchedule" Id="{6d95e7ac-c948-47fa-9fb5-6ec7114d880a}">
+      <Declaration><![CDATA[METHOD M_CheckTimeSchedule : BOOL
+VAR_INPUT
+	timeSchedule:stTimeToSchedule3;	//Hora marcada a ser validada
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_CheckTimeSchedule:= (timeSchedule.wHour>=0 AND timeSchedule.wHour<=23)AND (timeSchedule.wMinute>=0 AND timeSchedule.wMinute <=59)
+AND (timeSchedule.wSecond>=0 AND timeSchedule.wSecond <=59);]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_CmpTimeStr_Schedule" Id="{9e11bc5d-4a2a-4791-8589-714d2ead5c1c}">
+      <Declaration><![CDATA[METHOD PRIVATE M_CmpTimeStr_Schedule : BOOL
+VAR_INPUT
+	actualTime:TIMESTRUCT;
+	scheduledTime:stTimeToSchedule3;
+END_VAR
+VAR
+	timeToCmp:TIMESTRUCT;
+END_VAR
+(*
+	Esse metodo retorna true caso a hora atual seja >= à hora marcada para ocorrer o evento
+	Caso a variave 'bUse' do tempo marcado esteja desabilita também retorna false
+*)]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[timeToCmp.wYear:=actualTime.wYear;
+timeToCmp.wMonth:=actualTime.wMonth;
+timeToCmp.wDay:=actualTime.wDay;
+timeToCmp.wDayOfWeek:=actualTime.wDayOfWeek;
+timeToCmp.wHour:=scheduledTime.wHour;
+timeToCmp.wMinute:= scheduledTime.wMinute;
+timeToCmp.wSecond:=scheduledTime.wSecond;
+M_CmpTimeStr_Schedule:=F_CmpTimeStruct(actualTime,timeToCmp);]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_BasicTimeScheduler">
+      <LineId Id="3" Count="17" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicTimeScheduler.M_CheckTimeSchedule">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicTimeScheduler.M_CmpTimeStr_Schedule">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

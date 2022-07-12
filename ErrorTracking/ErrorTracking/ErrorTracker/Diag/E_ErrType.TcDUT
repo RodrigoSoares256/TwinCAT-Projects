@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.4">
+  <DUT Name="E_ErrType" Id="{18e53c82-d0cc-490b-aa11-97bc999ced61}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+TYPE E_ErrType :
+(
+	eFirStErr,
+	eCheckBoundsErr,
+	eCheckDivDint,
+	eCheckDivLint,
+	eCheckDivReal,
+	eCheckRange,
+	eCheckPointer,
+	eEtherCATErr,
+	eRuntimeErr,
+	eLastErr
+);
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

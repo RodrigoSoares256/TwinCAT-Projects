@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4020.6">
+  <POU Name="Teste" Id="{38722a99-fb9b-4890-b31c-8913a076df2a}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM Teste
+VAR
+
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i := 1 TO GVL_TimeSchBABR.cNumberOfEventSchedules DO
+	timeScheduler[i](
+		timeToActivate:= GVL_TimeSchBABR.aTimeToSchActivate[actualDate.wDayOfWeek,i], 
+		timeToDeactivate:= GVL_TimeSchBABR.aTimeToSchDeactivate[actualDate.wDayOfWeek,i], 
+		actualTime:= actualDate, 
+		bTurnOffOutput:= bTurnOffOutput, 
+		bErr=> bErr, 
+		sErr=> sErr, 
+		bOut=> GVL_TimeSchBABR.abOutScheduler[i]);
+END_FOR]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
