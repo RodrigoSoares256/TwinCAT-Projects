@@ -21,3 +21,4 @@ not provide it.
 * read time from the IPC on PT-BR format
 * change both time and date of the IPC
 * count time for machines (Hour meter) that counts time based on a persistent/retain variable
+* Provide a function block that will calculate quality functions for time such as average, standard deviation and so on
