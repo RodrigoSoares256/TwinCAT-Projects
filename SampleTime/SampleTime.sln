@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# TcXaeShell Solution File, Format Version 11.00
+VisualStudioVersion = 15.0.28307.1300
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{B1E792BE-AA5F-4E3C-8C82-674BF9C0715B}") = "SampleTime", "SampleTime\SampleTime.tsproj", "{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}"
 EndProject
@@ -27,18 +27,6 @@ Global
 		{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}.Release|TwinCAT RT (x64).Build.0 = Release|TwinCAT RT (x64)
 		{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}.Release|TwinCAT RT (x86).ActiveCfg = Release|TwinCAT RT (x86)
 		{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}.Release|TwinCAT RT (x86).Build.0 = Release|TwinCAT RT (x86)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT CE7 (ARMV7).ActiveCfg = Debug|TwinCAT CE7 (ARMV7)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT CE7 (ARMV7).Build.0 = Debug|TwinCAT CE7 (ARMV7)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT RT (x64).ActiveCfg = Debug|TwinCAT RT (x64)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT RT (x64).Build.0 = Debug|TwinCAT RT (x64)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT RT (x86).ActiveCfg = Debug|TwinCAT RT (x86)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Debug|TwinCAT RT (x86).Build.0 = Debug|TwinCAT RT (x86)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT CE7 (ARMV7).ActiveCfg = Release|TwinCAT CE7 (ARMV7)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT CE7 (ARMV7).Build.0 = Release|TwinCAT CE7 (ARMV7)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT RT (x64).ActiveCfg = Release|TwinCAT RT (x64)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT RT (x64).Build.0 = Release|TwinCAT RT (x64)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT RT (x86).ActiveCfg = Release|TwinCAT RT (x86)
-		{E1A7A630-D31B-4784-A8A0-5ED0B6708649}.Release|TwinCAT RT (x86).Build.0 = Release|TwinCAT RT (x86)
 		{4E208B6A-FF37-4391-A2E8-068C5AE9F0C0}.Debug|TwinCAT CE7 (ARMV7).ActiveCfg = Debug|TwinCAT CE7 (ARMV7)
 		{4E208B6A-FF37-4391-A2E8-068C5AE9F0C0}.Debug|TwinCAT CE7 (ARMV7).Build.0 = Debug|TwinCAT CE7 (ARMV7)
 		{4E208B6A-FF37-4391-A2E8-068C5AE9F0C0}.Debug|TwinCAT RT (x64).ActiveCfg = Debug|TwinCAT RT (x64)
@@ -54,5 +42,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EC555938-DA02-4CB9-AF5E-825D7BA218B5}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="FB_BasicStatistics" Id="{8e5b3f2e-024c-44a4-a839-6cc0762d9d11}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BasicStatistics
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_CalcAvg" Id="{6eee53f8-8227-4869-b7a3-293ff5203b75}">
+      <Declaration><![CDATA[METHOD M_CalcAvg : LREAL
+VAR_INPUT
+	valuesToAvg:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+VAR
+	i: UDINT;
+	sum:LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sum:=0;
+FOR i := 1 TO GVL_Const.lastStatsValue DO
+	sum:= sum+ valuesToAvg[i];
+END_FOR
+M_CalcAvg :=sum/GVL_Const.lastStatsValue;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_CalcMax" Id="{f73fbd8a-ab13-4a26-9e25-2b927d841d39}">
+      <Declaration><![CDATA[METHOD M_CalcMax : LREAL
+VAR_INPUT
+	valuesToMax:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+
+VAR
+	maximum: LREAL;
+	i: UDINT;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[maximum:=valuesToMax[1];
+FOR i:= 1 TO GVL_Const.lastStatsValue DO
+	maximum:= MAX(maximum,valuesToMax[i]);
+END_FOR
+M_CalcMax:= maximum;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_CalcMin" Id="{21bad41e-e22f-4b3a-bbb4-20dbee4d6a4f}">
+      <Declaration><![CDATA[METHOD M_CalcMin : LREAL
+VAR_INPUT
+	valuesToMin:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+
+VAR
+	minimum: LREAL;
+	i: UDINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[minimum:=valuesToMin[1];
+FOR i:= 1 TO GVL_Const.lastStatsValue DO
+	minimum:= MIN(minimum,valuesToMin[i]);
+END_FOR
+M_CalcMin:= minimum;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_CalcSD" Id="{46bd8a36-12f4-4364-a4a4-15510fb1b3b6}">
+      <Declaration><![CDATA[METHOD M_CalcSD : LREAL
+VAR_INPUT
+	valuesToSD:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_CalcSD := SQRT(M_CalcVariance(valuesToSD));]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_CalcVariance" Id="{f34edb28-da84-425c-acc3-b2f56b5e9577}">
+      <Declaration><![CDATA[METHOD PUBLIC M_CalcVariance : LREAL
+VAR_INPUT
+	valuesToVar:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+VAR
+	i: UDINT;
+	sum:LREAL;
+	avg:LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[sum:=0;
+avg:= M_CalcAvg(valuesToVar);
+FOR i := 1 TO GVL_Const.lastStatsValue DO
+	sum:= sum+EXPT(valuesToVar[i]-avg,2);
+END_FOR
+M_CalcVariance:= sum/GVL_Const.lastStatsValue;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_BasicStatistics">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatistics.M_CalcAvg">
+      <LineId Id="16" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="32" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatistics.M_CalcMax">
+      <LineId Id="13" Count="4" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatistics.M_CalcMin">
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="11" Count="1" />
+      <LineId Id="14" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatistics.M_CalcSD">
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatistics.M_CalcVariance">
+      <LineId Id="14" Count="0" />
+      <LineId Id="24" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="1" />
+      <LineId Id="23" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
