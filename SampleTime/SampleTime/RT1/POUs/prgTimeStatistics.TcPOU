@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="prgTimeStatistics" Id="{bbff2c88-80e2-406c-902e-430bf26b8972}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgTimeStatistics
+VAR
+	enableTimeCount: BOOL;
+	lastTimeStats:FB_LastTimesStats;
+	stats:st_BasicStats;
+	lastTime: TIME;
+	currTime: TIME;
+	lastTimes: ARRAY [1..GVL_Const.lastStatsValue] OF TIME;
+	arLastTimes: ARRAY [1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[lastTimeStats(enable:= enableTimeCount,lastTime => lastTime, currTime=>currTime, lastTimes => lastTimes, arLastTimes => arLastTimes);
+
+stats:=lastTimeStats.M_GetBasicStats();
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgTimeStatistics">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

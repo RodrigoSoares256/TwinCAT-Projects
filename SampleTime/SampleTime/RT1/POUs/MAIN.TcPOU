@@ -3,43 +3,17 @@
   <POU Name="MAIN" Id="{4772310b-f976-4d69-a72c-ac459426043c}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	basicStats:FB_BasicStatistics;
-	ar1:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
-	ar2:array[1..GVL_Const.lastStatsValue] OF LREAL;
-	media1,media2: LREAL;
-	variancia1,variancia2: LREAL;
-	desvio1, desvio2:LREAL;
-	min1,min2:LREAL;
-	max1,max2:LREAL;
+
 END_VAR]]></Declaration>
     <Implementation>
       <ST><![CDATA[prgTimeHandler();
 
-media1:= basicStats.M_CalcAvg(ar1);				//Calcula a média da distribuição 1 
-variancia1:= basicStats.M_CalcVariance(ar1);    //Calcula a Variancia da distribuição 1
-desvio1:= basicStats.M_CalcSD(ar1);             //Calcula o desvio padrão da distribuição 1
-min1:= basicStats.M_CalcMin(ar1);               //Calcula o mínimo da distribuição 1
-max1:= basicStats.M_CalcMax(ar1);               //Calcula o máximo da distribuição 1
-
-media2:= basicStats.M_CalcAvg(ar2);             //Calcula a média da distribuição 2
-variancia2:= basicStats.M_CalcVariance(ar2);    //Calcula a Variancia da distribuição 2
-desvio2:=basicStats.M_CalcSD(ar2);              //Calcula o desvio padrão da distribuição 2
-min2:= basicStats.M_CalcMin(ar2);               //Calcula o mínimo da distribuição 2
-max2:= basicStats.M_CalcMax(ar2);               //Calcula o máximo da distribuição 2]]></ST>
+prgTimeStatistics();]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />
       <LineId Id="10" Count="0" />
-      <LineId Id="9" Count="0" />
-      <LineId Id="11" Count="0" />
-      <LineId Id="19" Count="0" />
-      <LineId Id="30" Count="0" />
-      <LineId Id="32" Count="0" />
-      <LineId Id="24" Count="0" />
-      <LineId Id="20" Count="0" />
-      <LineId Id="13" Count="0" />
-      <LineId Id="33" Count="1" />
-      <LineId Id="23" Count="0" />
+      <LineId Id="45" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

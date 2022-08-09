@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+  <POU Name="fb_math" Id="{04e4fad5-365b-4d35-817c-9ba03d262acb}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK fb_math
+VAR
+	i: DINT;
+END_VAR
+VAR_INPUT
+	{attribute 'variable_length_array'}
+	{attribute 'Dimensions' := '1'}
+	arRawData: POINTER TO REAL;
+	{attribute 'variable_length_array'}
+	{attribute 'Dimensions' := '1'}
+	arVarianciaDB: POINTER TO REAL;
+END_VAR
+VAR_IN_OUT
+	param: ST_mathdata;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fb_math.param.rSum:= fb_math.param.rSumVarDb:= 0;
+FOR i:= LOWER_BOUND(arRawData,1) TO UPPER_BOUND(arRawData,1) BY 1 DO
+	fb_math.param.rSum:= fb_math.param.rSum + arRawData[i];
+	arVarianciaDB[i]:= EXPT(arRawData[i]-fb_math.param.ravg,2);
+	fb_math.param.rSumVarDb:= fb_math.param.rSumVarDb + arVarianciaDB[i];
+END_FOR
+
+fb_math.param.ravg:= fb_math.param.rSum/(UPPER_BOUND(arRawData,1)-LOWER_BOUND(arRawData,1));
+
+fb_math.param.rvariancia:= fb_math.param.rSumVarDb/(UPPER_BOUND(arRawData,1)-LOWER_BOUND(arRawData,1));
+
+fb_math.param.rDesvio:= SQRT(fb_math.param.rvariancia);
+
+IF fb_math.param.ravg<>0 THEN
+	fb_math.param.rCoefVar:=(fb_math.param.rDesvio/fb_math.param.ravg)*100;
+END_IF
+
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="fb_math">
+      <LineId Id="3" Count="17" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

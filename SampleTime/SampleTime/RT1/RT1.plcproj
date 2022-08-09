@@ -77,8 +77,15 @@
     <Compile Include="POUs\prgTimeHandler.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\prgTimeStatistics.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VISUs\EstatisticaTempo.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
     </Compile>
     <Compile Include="VISUs\FuncoesExtras.TcVIS">
       <SubType>Code</SubType>

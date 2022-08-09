@@ -6,8 +6,28 @@
         <o xml:space="preserve" t="GlobalTextListObject">
           <l n="TextList" t="ArrayList" cet="TextListRow">
             <o>
+              <v n="TextID">"148"</v>
+              <v n="TextDefault">"%.1f"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"509"</v>
+              <v n="TextDefault">"%d"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"18"</v>
               <v n="TextDefault">"%s"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"793"</v>
+              <v n="TextDefault">"%t"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"615"</v>
+              <v n="TextDefault">"180"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -31,6 +51,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"88"</v>
+              <v n="TextDefault">"Atual"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"7"</v>
               <v n="TextDefault">"Atualizar"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -48,6 +73,11 @@
             <o>
               <v n="TextID">"20"</v>
               <v n="TextDefault">"Desativar"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"183"</v>
+              <v n="TextDefault">"Desvio P."</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -73,6 +103,11 @@
             <o>
               <v n="TextID">"27"</v>
               <v n="TextDefault">"Domingo"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"585"</v>
+              <v n="TextDefault">"Estats tempo"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -108,6 +143,21 @@
             <o>
               <v n="TextID">"5"</v>
               <v n="TextDefault">"Min"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"876"</v>
+              <v n="TextDefault">"Máximo"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"277"</v>
+              <v n="TextDefault">"Médio"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"38"</v>
+              <v n="TextDefault">"Mínimo"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -183,6 +233,41 @@
             <o>
               <v n="TextID">"2"</v>
               <v n="TextDefault">"Update Time"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"181"</v>
+              <v n="TextDefault">"Variância"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"250"</v>
+              <v n="TextDefault">"Último"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"665"</v>
+              <v n="TextDefault">"Últimos tempos"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"29"</v>
+              <v n="TextDefault">"Últimos tempos (Real)"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"583"</v>
+              <v n="TextDefault">"Últimos tempos (s)"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"391"</v>
+              <v n="TextDefault">"Últimos tempos (Segundos)"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"880"</v>
+              <v n="TextDefault">"Últimos tempos (T)"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
           </l>

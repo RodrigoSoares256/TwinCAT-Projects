@@ -13,20 +13,24 @@ END_VAR]]></Declaration>
     </Implementation>
     <Method Name="M_CalcAvg" Id="{6eee53f8-8227-4869-b7a3-293ff5203b75}">
       <Declaration><![CDATA[METHOD M_CalcAvg : LREAL
-VAR_INPUT
-	valuesToAvg:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+VAR_IN_OUT
+	valuesToAvg:ARRAY[*] OF LREAL;
 END_VAR
 VAR
-	i: UDINT;
+	i: DINT;
 	sum:LREAL;
+	numOfElements: LREAL;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[sum:=0;
-FOR i := 1 TO GVL_Const.lastStatsValue DO
+numOfElements:=0;
+FOR i := LOWER_BOUND(valuesToAvg,1) TO UPPER_BOUND(valuesToAvg,1) DO
 	sum:= sum+ valuesToAvg[i];
+	numOfElements:=numOfElements+1;
 END_FOR
-M_CalcAvg :=sum/GVL_Const.lastStatsValue;
-]]></ST>
+IF numOfElements >0 THEN
+	M_CalcAvg :=sum/numOfElements;
+END_IF]]></ST>
       </Implementation>
     </Method>
     <Method Name="M_CalcMax" Id="{f73fbd8a-ab13-4a26-9e25-2b927d841d39}">
@@ -101,11 +105,14 @@ M_CalcVariance:= sum/GVL_Const.lastStatsValue;]]></ST>
     </LineIds>
     <LineIds Name="FB_BasicStatistics.M_CalcAvg">
       <LineId Id="16" Count="0" />
+      <LineId Id="42" Count="0" />
       <LineId Id="5" Count="0" />
       <LineId Id="14" Count="0" />
+      <LineId Id="44" Count="0" />
       <LineId Id="10" Count="0" />
+      <LineId Id="40" Count="0" />
       <LineId Id="24" Count="0" />
-      <LineId Id="32" Count="0" />
+      <LineId Id="41" Count="0" />
     </LineIds>
     <LineIds Name="FB_BasicStatistics.M_CalcMax">
       <LineId Id="13" Count="4" />

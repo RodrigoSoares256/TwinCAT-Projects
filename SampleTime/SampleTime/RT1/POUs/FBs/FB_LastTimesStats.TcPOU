@@ -6,14 +6,14 @@ VAR_INPUT
 	enable: BOOL;	//Enable time counting
 END_VAR
 VAR_OUTPUT
-END_VAR
-VAR
-	t1:TON;
-	disableTrig:F_TRIG;
 	lastTime:TIME;
 	currTime:TIME;
 	lastTimes:ARRAY[1..GVL_Const.lastStatsValue] OF TIME;
 	arLastTimes:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+END_VAR
+VAR
+	t1:TON;
+	disableTrig:F_TRIG;
 	i: UDINT;
 END_VAR]]></Declaration>
     <Implementation>
@@ -28,8 +28,23 @@ IF disableTrig.Q THEN
 		arLastTimes[i]:= TIME_TO_LREAL(lastTimes[i])/1000;
 	END_FOR
 END_IF
-t1(IN:= enable, PT:= T#7D);]]></ST>
+t1(IN:= enable, PT:= T#7D);
+currTime:= t1.ET;]]></ST>
     </Implementation>
+    <Method Name="M_GetBasicStats" Id="{4423bfc3-d543-436b-b7ff-b92f25c2aa18}">
+      <Declaration><![CDATA[METHOD M_GetBasicStats : ST_BasicStats
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[M_GetBasicStats.avg:=SUPER^.M_CalcAvg(THIS^.arLastTimes);
+M_GetBasicStats.maximum:=SUPER^.M_CalcMax(THIS^.arLastTimes);
+M_GetBasicStats.minimum:=SUPER^.M_CalcMin(THIS^.arLastTimes);
+M_GetBasicStats.variance:=SUPER^.M_CalcVariance(THIS^.arLastTimes);
+M_GetBasicStats.standardDeviation:=SUPER^.M_CalcSD(THIS^.arLastTimes);
+]]></ST>
+      </Implementation>
+    </Method>
     <LineIds Name="FB_LastTimesStats">
       <LineId Id="9" Count="0" />
       <LineId Id="16" Count="1" />
@@ -41,6 +56,10 @@ t1(IN:= enable, PT:= T#7D);]]></ST>
       <LineId Id="43" Count="0" />
       <LineId Id="18" Count="0" />
       <LineId Id="15" Count="0" />
+      <LineId Id="63" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_LastTimesStats.M_GetBasicStats">
+      <LineId Id="5" Count="5" />
     </LineIds>
   </POU>
 </TcPlcObject>
