@@ -35,18 +35,18 @@ END_IF]]></ST>
     </Method>
     <Method Name="M_CalcMax" Id="{f73fbd8a-ab13-4a26-9e25-2b927d841d39}">
       <Declaration><![CDATA[METHOD M_CalcMax : LREAL
-VAR_INPUT
-	valuesToMax:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+VAR_IN_OUT
+	valuesToMax:ARRAY[*] OF LREAL;
 END_VAR
 
 VAR
 	maximum: LREAL;
-	i: UDINT;
+	i: DINT;
 END_VAR
 ]]></Declaration>
       <Implementation>
         <ST><![CDATA[maximum:=valuesToMax[1];
-FOR i:= 1 TO GVL_Const.lastStatsValue DO
+FOR i:= LOWER_BOUND(valuesToMax,1) TO UPPER_BOUND(valuesToMax,1) DO
 	maximum:= MAX(maximum,valuesToMax[i]);
 END_FOR
 M_CalcMax:= maximum;
@@ -55,17 +55,17 @@ M_CalcMax:= maximum;
     </Method>
     <Method Name="M_CalcMin" Id="{21bad41e-e22f-4b3a-bbb4-20dbee4d6a4f}">
       <Declaration><![CDATA[METHOD M_CalcMin : LREAL
-VAR_INPUT
-	valuesToMin:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+VAR_IN_OUT
+	valuesToMin:ARRAY[*] OF LREAL;
 END_VAR
 
 VAR
 	minimum: LREAL;
-	i: UDINT;
+	i: DINT;
 END_VAR]]></Declaration>
       <Implementation>
         <ST><![CDATA[minimum:=valuesToMin[1];
-FOR i:= 1 TO GVL_Const.lastStatsValue DO
+FOR i:= LOWER_BOUND(valuesToMin,1) TO UPPER_BOUND(valuesToMin,1) DO
 	minimum:= MIN(minimum,valuesToMin[i]);
 END_FOR
 M_CalcMin:= minimum;
@@ -83,21 +83,24 @@ END_VAR]]></Declaration>
     </Method>
     <Method Name="M_CalcVariance" Id="{f34edb28-da84-425c-acc3-b2f56b5e9577}">
       <Declaration><![CDATA[METHOD PUBLIC M_CalcVariance : LREAL
-VAR_INPUT
-	valuesToVar:ARRAY[1..GVL_Const.lastStatsValue] OF LREAL;
+VAR_IN_OUT
+	valuesToVar:ARRAY[*] OF LREAL;
 END_VAR
 VAR
-	i: UDINT;
+	i: DINT;
 	sum:LREAL;
 	avg:LREAL;
+	numOfElements:lreal;
 END_VAR]]></Declaration>
       <Implementation>
-        <ST><![CDATA[sum:=0;
+        <ST><![CDATA[sum:=numOfElements:=0;
 avg:= M_CalcAvg(valuesToVar);
-FOR i := 1 TO GVL_Const.lastStatsValue DO
+FOR i := LOWER_BOUND(valuesToVar,1) TO UPPER_BOUND(valuesToVar,1) DO
 	sum:= sum+EXPT(valuesToVar[i]-avg,2);
+	numOfElements:= numOfElements+1;
 END_FOR
-M_CalcVariance:= sum/GVL_Const.lastStatsValue;]]></ST>
+M_CalcVariance:= sum/numOfElements;
+]]></ST>
       </Implementation>
     </Method>
     <LineIds Name="FB_BasicStatistics">
@@ -131,8 +134,11 @@ M_CalcVariance:= sum/GVL_Const.lastStatsValue;]]></ST>
       <LineId Id="14" Count="0" />
       <LineId Id="24" Count="0" />
       <LineId Id="5" Count="0" />
-      <LineId Id="10" Count="1" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="43" Count="0" />
+      <LineId Id="11" Count="0" />
       <LineId Id="23" Count="0" />
+      <LineId Id="33" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>

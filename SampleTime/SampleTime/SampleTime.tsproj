@@ -52,7 +52,7 @@
 			</Hides>
 		</DataType>
 	</DataTypes>
-	<Project ProjectGUID="{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{DA3FCBFC-D078-4E10-8620-E23F58B2CC3E}" TargetNetId="192.168.0.60.1.1" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="351">
