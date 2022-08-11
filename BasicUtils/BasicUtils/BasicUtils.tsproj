@@ -5,6 +5,11 @@
 			<Settings MaxCpus="2">
 				<Cpu CpuId="1"/>
 			</Settings>
+			<Licenses IgnoreProjectLicenses="true">
+				<Target>
+					<ManualSelect>{BDCC0070-42D5-49AE-ABF1-1D4434813D60}</ManualSelect>
+				</Target>
+			</Licenses>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
 					<Name>PlcTask</Name>
