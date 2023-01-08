@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{802f900f-cdd4-480e-acdf-5193ea5f97a2}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	temperatureSimul:FB_Process;
+	tempCmd AT %I*:LREAL;
+	actualTemp AT %Q*:LREAL;
+END_VAR
+VAR CONSTANT
+	taskCycletime:TIME:=T#10MS;
+	bNoiseEnable:BOOL:=TRUE;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[temperatureSimul(fY:= tempCmd, tTa:=taskCycletime , bNoise:= bNoiseEnable, fX=>actualTemp);
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

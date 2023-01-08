@@ -3,10 +3,10 @@
   <POU Name="prgAlarms" Id="{83097bec-8bbc-4645-9cc5-ef18e5c8c869}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM prgAlarms
 VAR
-	abAlarm: ARRAY[1..iNumAlarm] OF BOOL;
-	aFBAlarm:ARRAY[1..iNumAlarm] OF FB_SimpleAdsLogEvent;
+	abAlarm: ARRAY[1..iNumAlarm] OF BOOL;					//It's just basically set one of these bits in order to activate an alarm
+	aFBAlarm:ARRAY[1..iNumAlarm] OF FB_SimpleAdsLogEvent;	//Function block that can be used in order to activate the alarms
 	i: INT;
-	readEvents:FB_AdsReadEvents;
+	readEvents:FB_AdsReadEvents;							//
 	bReadEvents: BOOL := TRUE;
 	iNumEvents: UDINT;
 	//Alarm Histtory
@@ -17,7 +17,8 @@ VAR CONSTANT
 END_VAR
 ]]></Declaration>
     <Implementation>
-      <ST><![CDATA[FOR i:=1 TO iNumAlarm DO
+      <ST><![CDATA[//Logic to activate the alarms
+FOR i:=1 TO iNumAlarm DO
 	aFBAlarm[i](
 		SourceID:=1100 , 
 		EventID:= i, 
@@ -26,7 +27,7 @@ END_VAR
 		ErrId=> , 
 		Error=> );
 END_FOR
-
+//Read the active alarms
 readEvents(
 	sNetId:= '', 
 	bReadEvents:= bReadEvents, 
@@ -44,6 +45,7 @@ readEvents(
 alarmHistCtrl(ptHist:= ADR(toHMI.aHist), ptActiveAlarms:=ADR(toHMI.aEvents));]]></ST>
     </Implementation>
     <LineIds Name="prgAlarms">
+      <LineId Id="61" Count="0" />
       <LineId Id="22" Count="24" />
     </LineIds>
   </POU>

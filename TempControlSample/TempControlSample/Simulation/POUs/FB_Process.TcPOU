@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Process" Id="{57529e90-5f23-42f8-aaea-dc263e299989}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Process
+
+VAR_INPUT
+	fY		:	LREAL;
+	tTa		:	TIME;
+	bNoise	:	BOOL;
+END_VAR
+
+VAR_OUTPUT
+	fX		:	LREAL;
+END_VAR
+
+VAR
+	(* Processparameters *)
+	tT11		:	TIME	:= t#5s;
+	tT12		:	TIME	:= t#25s;
+
+	(* process *)
+	fbProcessPart1	:	FB_CTRL_PT1;
+	fbProcessPart2	:	FB_CTRL_PT1;
+	fbNoise			:	FB_CTRL_NOISE_GENERATOR;
+
+	stProcessPart1	:	ST_CTRL_PT1_PARAMS;
+	stProcessPart2	:	ST_CTRL_PT1_PARAMS;
+	stNoise			:	ST_CTRL_NOISE_GENERATOR_PARAMS;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(* init structures *)
+stProcessPart1.fKp := 1.0;
+stProcessPart1.tCtrlCycleTime := tTa;
+stProcessPart1.tT1 := tT11;
+stProcessPart1.tTaskCycleTime := tTa;
+
+stProcessPart2.fKp := 1.0;
+stProcessPart2.tCtrlCycleTime := tTa;
+stProcessPart2.tT1 := tT12;
+stProcessPart2.tTaskCycleTime := tTa;
+
+stNoise.fAmplitude := 1.0;
+stNoise.tCtrlCycleTime := tTa;
+stNoise.tTaskCycleTime := tTa;
+
+(* calculate and simulate process *)
+fbProcessPart1(
+				fIn:= fY,
+				fManSyncValue:= 0.0,
+				bSync:= FALSE,
+				eMode:= eCTRL_MODE_ACTIVE,
+				bHold:= FALSE,
+				stParams:= stProcessPart1);
+
+fbProcessPart2(
+				fIn:= fbProcessPart1.fOut,
+				fManSyncValue:= 0.0,
+				bSync:= FALSE,
+				eMode:= eCTRL_MODE_ACTIVE,
+				bHold:= FALSE,
+				stParams:= stProcessPart2);
+
+fbNoise(
+		fManSyncValue:= 0.0,
+		eMode:= eCTRL_MODE_ACTIVE,
+		stParams:= stNoise);
+
+IF bNoise THEN
+	fX := fbProcessPart2.fOut + 0.01*fbNoise.fOut;
+ELSE
+	fX := fbProcessPart2.fOut;
+END_IF;
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Process">
+      <LineId Id="3" Count="41" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

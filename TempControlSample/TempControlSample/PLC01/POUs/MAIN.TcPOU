@@ -1,0 +1,219 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{4b9fa9ce-6f8d-4f91-8390-d6aa06d51a8f}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	controller:FB_CTRL_TempController;
+	tempSetpoint:ARRAY[1..2] OF LREAL:=[100,50];
+	currTemp AT %I*:LREAL;
+	fyAnalogOutput AT %Q*:LREAL;
+	bSelSetpoint: BOOL;
+	eCtrlMode: E_CTRL_MODE := E_CTRL_MODE.eCTRL_MODE_IDLE;
+	eCtrlState: Tc2_TempController.E_CTRL_STATE;
+	internalParams: Tc2_TempController.ST_CTRL_ParaController;
+	startTunning: BOOL;
+
+	activeSetpoint: LREAL;
+	bCopyParams:BOOL;	//copy internal params into external params
+	startAutoTunning: BOOL;
+	bStartCtrlAfterTunning: BOOL;
+	trigTunningFinished:R_TRIG;
+
+	bErrorActive: BOOL;
+	errId: Tc2_TempController.E_CTRL_ErrorCodes;
+	bOutputHeat: BOOL;
+	bOutputCool: BOOL;
+	blink:FB_Blink;
+	blinkLed: BOOL;
+	bBlinkError: BOOL;
+	iTunningType:INT;
+	startController: BOOL;
+	stopController: BOOL;
+END_VAR
+VAR PERSISTENT
+	externalParams: ST_CTRL_ParaController;
+	stControllerParameter	: ST_CTRL_TempCtrlParameter := (		
+		
+		(* general parameters 													 *)
+		iMode					:= 1,											(* 1=heating, 2=cooling, 3=heating&cooling *)
+		iReactionOnFailure		:= eCTRL_ReactionOnFailure_StopController,		(* 0=controller off, 1=manual op, 2=yMin, 3=yMax *)
+	
+		bSelCtrlParameterSet	:= FALSE,										(* FALSE = internal set, TRUE = external set *)
+	
+		dwAlarmSupp				:= 16#0000EFFF,									(* alarm suppression *)
+		tCtrlCycleTime			:= T#500MS,										(* controller cycle time *)
+		tTaskCycleTime			:= T#10MS,										(* plc task cycle time *)
+		
+		(* tuning parameters 													 *)
+		iTuningMode				:= 1,											(* only heating, only cooling, first heating then cooling or vice versa *)
+	
+		tTuneStabilisation		:= T#20S,										(* wait for a stable system *)
+	
+		fEndTunePercentHeating	:= 80.0,										(* switch to closed loop control when X > 0.8*W *)
+		fYTuneHeating			:= 100.0,										(* step change while tuning operation *)
+		fYStableHeating			:= 0.0,											(* tuning operation *)
+	
+		fEndTunePercentCooling	:= 20.0,										(* switch to closed loop control when X < 0.2*W *)
+		fYTuneCooling			:= 0.0,											(* step change while tuning operation *)
+		fYStableCooling			:= 0.0,											(* tuning operation *)
+		fScalingFactor			:= 1.0,											(* Scaling factor for KP heating/cooling *)
+		
+		(* setpoint parameters 													 *)
+		fWMin					:= 0.0,											(* lower limit *)
+		fWMax					:= 300.0,										(* upper limit *)
+	
+		(* start up *)
+		bEnableSoftStart		:= FALSE,										(* FALSE = no soft start, TRUE = soft start *)
+		bEnableRamping			:= FALSE,										(* FALSE = no ramping, TRUE = ramping *)
+	
+		fWStartUp				:= 0.0,											(* soft start plateau setpoint *)
+		tStartUp				:= T#0MS,										(* soft start waiting time*)
+		bStartUpRamping			:= FALSE,										(* enable ramping while start up phase *)
+		fWStartUpVeloPos		:= 1.0,											(* max gradient for increasing setpoint in start up phase*)
+		fWStartUpVeloNeg		:= 1.0,											(* max gradient for decreasing setpoint in start up phase *)
+	
+		fWVeloPos				:= 1.0,											(* max gradient for increasing setpoint *)
+		fWVeloNeg				:= 1.0,											(* max gradient for decreasing setpoint *)	
+	
+		(* actual value parameters     											 *)
+		bFilter 				:= FALSE,
+		tFilter					:= T#0S,
+		
+		(* deadband parameters     												 *)
+		bDeadband				:= FALSE,
+		fEDeadband				:= 0.0,											(* deadband *)
+		
+		(* control value parameters     										 *)
+		fYMin					:= 0.0,											(* lower limit *)
+		fYMax					:= 100.0,										(* upper limit *)
+		fYManual				:= 0.0,									 		(* manual operation*)
+		fYOnFailure				:= 0.0,											(* control value on failure *)
+	
+		tPWMCycleTime			:= t#1s,										(* PWM: period *)
+		tPWMMinOffTime			:= t#0s,										(* PWM: min off time *)
+		tPWMMinOnTime			:= t#0s,										(* PWM: min on time *)
+		tPWMWaitingTime			:= t#0s,										(* PWM: min waiting time *) (* not yet implemented !!!!*)
+	
+		fYThresholdOff			:= 0.0,											(* 3-Point: Off threshold *)
+		fYThresholdOn			:= 0.0,											(* 3-Point: On threshold *)
+	
+		nCyclesForSwitchOver	:= 100,
+	
+		(* controller settings			     									 *)
+		bEnablePreController 	:= FALSE,										(* enable precontroller *)
+		bEnableZones 			:= FALSE,										(* enable zone around setpoint with open loop control *)
+		bEnableCVFilter 		:= FALSE,										(* enable filter for CV (type see iFilterType) *)
+		iFilterType 			:= E_FilterType_FIRSTORDER,			 			(* filtertype of CV filter *)
+		iControllerType 		:= eCTRL_ControllerType_PID,					(* used controller normally PID *)
+		
+		
+		(* min max temperatures	     											 *)
+		TempLow					:= -5.0,
+		TempLowLow				:= -10.0,
+		TempHigh				:= 5.0,
+		TempHighHigh			:= 10.0,
+		TempAbsoluteHigh		:= 300.0,
+		TempAbsoluteLow			:= 0.0,	
+		
+		(* internal tuning parameters *)
+		fTuneKp					:= 1.2,
+		fTuneTn					:= 2.0,
+		fTuneTv					:= 0.42,
+		fTuneTd					:= 0.25
+		);	
+END_VAR
+VAR CONSTANT
+	aTuneDefParams: ARRAY [0..2] OF stAutoTunningDef := [(fTuneKp := 1.2, fTuneTn := 2.0, fTuneTv := 0.42, fTuneTd := 0.25), (fTuneKp := 1.0, fTuneTn := 2.5, fTuneTv := 0.42, fTuneTd := 0.25), (fTuneKp := 0.5, fTuneTn := 3.0, fTuneTv := 1.0, fTuneTd := 0.25)];
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[actModeMgmt();
+
+trigTunningFinished(CLK:= eCtrlState = E_CTRL_STATE.eCTRL_STATE_TUNED);
+IF trigTunningFinished.Q AND bStartCtrlAfterTunning THEN
+	eCtrlMode:= E_CTRL_MODE.eCTRL_MODE_ACTIVE;
+END_IF
+
+controller(
+	eCtrlMode:=eCtrlMode , 
+	bSelSetpoint:= bSelSetpoint, 
+	fW1:=tempSetpoint[1] , 
+	fW2:= tempSetpoint[2], 
+	fX:= currTemp, 
+	fYManual:= , 
+	sParaControllerExternal:= externalParams, 
+	sControllerParameter:=stControllerParameter, 
+	fYAnalog=> fyAnalogOutput, 
+	eCtrlState=> eCtrlState, 
+	sParaControllerInternal=> internalParams, 
+	bError=>bErrorActive , 
+	eErrorId=> errId);
+	
+actValueCopy();
+
+
+bBlinkError:= bErrorActive AND blinkLed;
+
+blink(timeOn:= T#500MS, timeOff:= T#700MS, bOutput=>blinkLed );
+]]></ST>
+    </Implementation>
+    <Action Name="actModeMgmt" Id="{95c088f6-5464-4dc9-9e2f-c1bca798fdb0}">
+      <Implementation>
+        <ST><![CDATA[IF startAutoTunning AND eCtrlState <> E_CTRL_STATE.eCTRL_STATE_TUNING AND eCtrlState <> E_CTRL_STATE.eCTRL_STATE_TUNED AND 
+	eCtrlState <> E_CTRL_STATE.eCTRL_STATE_ERROR AND eCtrlState <> E_CTRL_STATE.eCTRL_STATE_RESET THEN
+	eCtrlMode:= E_CTRL_MODE.eCTRL_MODE_TUNE;
+END_IF
+
+
+IF startController AND eCtrlState <> E_CTRL_STATE.eCTRL_STATE_TUNING AND eCtrlState <> E_CTRL_STATE.eCTRL_STATE_ERROR THEN
+	eCtrlMode:= E_CTRL_MODE.eCTRL_MODE_ACTIVE;
+END_IF
+
+IF stopController THEN
+	eCtrlMode:= E_CTRL_MODE.eCTRL_MODE_IDLE;
+END_IF]]></ST>
+      </Implementation>
+    </Action>
+    <Action Name="actValueCopy" Id="{b9b3a6bd-8875-42f0-8cee-c6c370be1beb}">
+      <Implementation>
+        <ST><![CDATA[IF bCopyParams THEN
+	externalParams:=internalParams;
+END_IF
+
+bOutputHeat:=controller.bYPWMPos;
+bOutputCool:=controller.bYPWMNeg;
+
+IF iTunningType >=0 AND iTunningType<=2 THEN
+	stControllerParameter.fTuneKp:=aTuneDefParams[iTunningType].fTuneKp;
+	stControllerParameter.fTuneTn:=aTuneDefParams[iTunningType].fTuneTn;
+	stControllerParameter.fTuneTv:=aTuneDefParams[iTunningType].fTuneTv;
+	stControllerParameter.fTuneTd:=aTuneDefParams[iTunningType].fTuneTd;
+END_IF
+
+activeSetpoint:=SEL(bSelSetpoint, tempSetpoint[1],tempSetpoint[2]);]]></ST>
+      </Implementation>
+    </Action>
+    <LineIds Name="MAIN">
+      <LineId Id="421" Count="0" />
+      <LineId Id="425" Count="24" />
+      <LineId Id="457" Count="1" />
+      <LineId Id="285" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.actModeMgmt">
+      <LineId Id="14" Count="11" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+    <LineIds Name="MAIN.actValueCopy">
+      <LineId Id="2" Count="1" />
+      <LineId Id="1" Count="0" />
+      <LineId Id="5" Count="1" />
+      <LineId Id="4" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="11" Count="2" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="14" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

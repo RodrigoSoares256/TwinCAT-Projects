@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35" ClassName="CNestedPlcProjDef">
+	<Project GUID="{C25426ED-EA14-4864-9EB8-773975BEF59A}" Name="PLC01" PrjFilePath="..\..\PLC01\PLC01.plcproj" TmcFilePath="..\..\PLC01\PLC01.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+		<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLC01\PLC01.tmc" TmcHash="{364DCDEB-41F6-C0F3-4595-3057DBAE6626}">
+			<Name>PLC01 Instance</Name>
+			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+			<Vars VarGrpType="1">
+				<Name>PlcTask Inputs</Name>
+				<Var>
+					<Name>MAIN.currTemp</Name>
+					<Type>LREAL</Type>
+				</Var>
+			</Vars>
+			<Vars VarGrpType="2" AreaNo="1">
+				<Name>PlcTask Outputs</Name>
+				<Var>
+					<Name>MAIN.fyAnalogOutput</Name>
+					<Type>LREAL</Type>
+				</Var>
+			</Vars>
+			<Contexts>
+				<Context>
+					<Id NeedCalleeCall="true">0</Id>
+					<Name>PlcTask</Name>
+					<ManualConfig>
+						<OTCID>#x02010030</OTCID>
+					</ManualConfig>
+					<Priority>20</Priority>
+					<CycleTime>10000000</CycleTime>
+				</Context>
+			</Contexts>
+			<TaskPouOids>
+				<TaskPouOid Prio="20" OTCID="#x08502001"/>
+			</TaskPouOids>
+		</Instance>
+	</Project>
+	<Mappings>
+		<OwnerA Name="PLC01 Instance">
+			<OwnerB Name="TIPC^Simulation^Simulation Instance">
+				<Link VarA="PlcTask Inputs^MAIN.currTemp" VarB="PlcTask Outputs^MAIN.actualTemp"/>
+				<Link VarA="PlcTask Outputs^MAIN.fyAnalogOutput" VarB="PlcTask Inputs^MAIN.tempCmd"/>
+			</OwnerB>
+		</OwnerA>
+	</Mappings>
+</TcSmItem>
