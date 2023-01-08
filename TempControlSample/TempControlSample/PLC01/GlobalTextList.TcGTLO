@@ -146,6 +146,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"667"</v>
+              <v n="TextDefault">"MAIN"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"401"</v>
               <v n="TextDefault">"Monitoring"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -176,6 +181,11 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"88"</v>
+              <v n="TextDefault">"Principal"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"184"</v>
               <v n="TextDefault">"Setpoint"</v>
               <l n="LanguageTexts" t="ArrayList" />
@@ -193,6 +203,16 @@
             <o>
               <v n="TextID">"900"</v>
               <v n="TextDefault">"Setponit"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"865"</v>
+              <v n="TextDefault">"Soft Start"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"893"</v>
+              <v n="TextDefault">"Soft start temp"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -223,6 +243,11 @@
             <o>
               <v n="TextID">"934"</v>
               <v n="TextDefault">"Td Heat"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"938"</v>
+              <v n="TextDefault">"Tempo"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
@@ -283,6 +308,11 @@
             <o>
               <v n="TextID">"14"</v>
               <v n="TextDefault">"Use External param set"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"347"</v>
+              <v n="TextDefault">"Use softstart"</v>
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>

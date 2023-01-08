@@ -120,7 +120,8 @@ VAR PERSISTENT
 		fTuneTn					:= 2.0,
 		fTuneTv					:= 0.42,
 		fTuneTd					:= 0.25
-		);	
+		);
+		softStartWaitTime:LREAL;
 END_VAR
 VAR CONSTANT
 	aTuneDefParams: ARRAY [0..2] OF stAutoTunningDef := [(fTuneKp := 1.2, fTuneTn := 2.0, fTuneTv := 0.42, fTuneTd := 0.25), (fTuneKp := 1.0, fTuneTn := 2.5, fTuneTv := 0.42, fTuneTd := 0.25), (fTuneKp := 0.5, fTuneTn := 3.0, fTuneTv := 1.0, fTuneTd := 0.25)];
@@ -149,7 +150,6 @@ controller(
 	eErrorId=> errId);
 	
 actValueCopy();
-
 
 bBlinkError:= bErrorActive AND blinkLed;
 
@@ -189,12 +189,15 @@ IF iTunningType >=0 AND iTunningType<=2 THEN
 	stControllerParameter.fTuneTd:=aTuneDefParams[iTunningType].fTuneTd;
 END_IF
 
-activeSetpoint:=SEL(bSelSetpoint, tempSetpoint[1],tempSetpoint[2]);]]></ST>
+activeSetpoint:=SEL(bSelSetpoint, tempSetpoint[1],tempSetpoint[2]);
+stControllerParameter.tStartUp:= LREAL_TO_TIME(softStartWaitTime*1000);
+]]></ST>
       </Implementation>
     </Action>
     <LineIds Name="MAIN">
       <LineId Id="421" Count="0" />
-      <LineId Id="425" Count="24" />
+      <LineId Id="425" Count="21" />
+      <LineId Id="448" Count="1" />
       <LineId Id="457" Count="1" />
       <LineId Id="285" Count="0" />
     </LineIds>
@@ -214,6 +217,7 @@ activeSetpoint:=SEL(bSelSetpoint, tempSetpoint[1],tempSetpoint[2]);]]></ST>
       <LineId Id="10" Count="0" />
       <LineId Id="15" Count="0" />
       <LineId Id="14" Count="0" />
+      <LineId Id="16" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>
