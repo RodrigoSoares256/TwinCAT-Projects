@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
-	<Project ProjectGUID="{596085B8-C82C-4960-8A4E-E5B1FA6BD2C1}" TargetNetId="169.254.34.75.1.1" Target64Bit="true" ShowHideConfigurations="#x3c7">
+	<Project ProjectGUID="{596085B8-C82C-4960-8A4E-E5B1FA6BD2C1}" Target64Bit="true" ShowHideConfigurations="#x3c7">
 		<System>
-			<Settings MaxCpus="4">
-				<Cpu CpuId="3"/>
+			<Settings MaxCpus="8">
+				<Cpu CpuId="7"/>
 			</Settings>
 			<Tasks>
 				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
