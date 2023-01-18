@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="PIController" Id="{43ba5f8e-cb27-4a26-94c9-947bf0784159}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK PIController
+VAR_INPUT
+	Kp:LREAL;				(*Ganho proporcional*)
+	Ki:LREAL;				(*Ganho integral*)
+	rSp:LREAL;				(*Set point*)
+	rPv:LREAL;				(*Process Value*)
+	rPastTime:LREAL;			(*tempo decorrido em segundos*)
+	rLowerSaturation:LREAL;	(*Valor minimo que e sai do controlador*)
+	rUpperSaturation:LREAL;	(*Valor maximo que sai do controlador*)
+	bReset:BOOL;			(*Reset do controlador*)
+END_VAR
+VAR_OUTPUT
+	rOutput:LREAL;			(*saida do controlador*)
+END_VAR
+VAR
+	Integrator:Integral;			(*bloco calcula o sinla integral*)
+	rError: LREAL;			(*sinal de erro*)
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Calcula o sinal de erro*)
+rError:=rSp -rPv;
+(*Calcula a parte integral*)
+Integrator(rInput:=rError , rPastTime:= rPastTime, bReset:=bReset );
+
+rOutput:= LIMIT(rLowerSaturation,Kp*rError+Ki*Integrator.rIntegral,rUpperSaturation);]]></ST>
+    </Implementation>
+    <LineIds Name="PIController">
+      <LineId Id="3" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

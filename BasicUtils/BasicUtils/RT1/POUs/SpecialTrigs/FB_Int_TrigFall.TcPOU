@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_Int_TrigFall" Id="{814b6012-f2bd-4fe0-b536-c413a3ebc088}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Int_TrigFall
+VAR_INPUT
+	IN:INT;
+	inRequired:INT;
+END_VAR
+VAR_OUTPUT
+	Q:BOOL;
+END_VAR
+VAR
+	M:INT;
+END_VAR
+(*neste bloco funcional a saida Q e ativa durante um ciclo toda vez que IN se torna diferente a inRequired*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[Q:=(IN <> inRequired) AND (inRequired = M);
+M:=IN;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_Int_TrigFall">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RampReal" Id="{ef1eebd9-7a97-4343-bbcc-f7445447914c}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RampReal
+VAR_INPUT
+	rValue,rRamp:LREAL;	(*Valor para rampear*)
+	bEnable: BOOL;		(*habilita o funcionamento da rampa*)
+	rTolerance: LREAL;	(*Tolerancia para considerar que a saida esta igual ao valor setado*)
+END_VAR
+VAR_OUTPUT
+	rOutPut:LREAL;		(*valor calculado*)
+	bInvalidValue: BOOL;	(*caso algum valor negativo seja inserido*)
+END_VAR
+VAR
+	rampTON:TON;		(*Temporizador do gerador de rampas*)
+	rOldValue: LREAL;		(*ultimo valor colocado na saida*)
+END_VAR
+(*Bloco gera saida rampeada de acordo com os valores fornecidos em rValue,rRamp e bEnable*)
+(*So admite valores positivos, tanto para valores quanto para rampas, caso contrario gera um sinal de erro*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF rValue>=0 AND rRamp>=0 THEN
+(*define o valor de tempo a ser utilizado na rampa*)
+	IF rValue <> rOutPut AND bEnable THEN
+		IF rValue > rOldValue THEN
+			rampTON.PT:=LREAL_TO_TIME((rValue-rOldValue)*1000/CheckDivZero(rRamp));
+		ELSIF rValue < rOldValue THEN
+			rampTON.PT:=LREAL_TO_TIME((rOldValue-rValue)*1000/CheckDivZero(rRamp));
+		ELSE
+			rampTON.PT:=t#0s;
+		END_IF
+	ELSIF NOT bEnable THEN
+		rOldValue:=0;
+		rOutPut:=0;
+	END_IF
+	(*calcula o valor a ser somado/subtraido da rampa*)
+	IF betwenLimits(rValue-rTolerance,rOutPut,rValue+rTolerance) THEN
+		rOldValue:=rOutPut;
+	END_IF
+	(*temporizador utilizado para gerar as rampas*)
+	rampTON(IN:= bEnable AND  rValue <> rOutPut );
+	(*Calcula o valor de saida de acordo com os criterios pertinentes*)
+	IF rValue > rOldValue THEN
+		rOutPut:=LIMIT(0,(TIME_TO_LREAL(rampTON.ET)/1000)*rRamp+rOldValue,rValue);
+	ELSIF rValue < rOldValue THEN
+		rOutPut:=LIMIT(rValue,rOldValue-(TIME_TO_LREAL(rampTON.ET)/1000)*rRamp,rOldValue);
+	ELSE
+		rOutPut:=rValue;
+	END_IF
+	bInvalidValue:=FALSE;
+ELSE
+	rOutPut:=0;
+	bInvalidValue:=TRUE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RampReal">
+      <LineId Id="3" Count="31" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="LinTrafoLimitLess" Id="{d0ca79a4-037c-47d1-8f3e-1712e918b4a5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION LinTrafoLimitLess : REAL
+VAR_INPUT
+	rValue:REAL;			(*Valor a sofrer escala*)
+	rInMin:REAL;			(*Valor minimo de entrada*)
+	rInMax:REAL;			(*valor Maximo de entrada*)
+	rOutMin:REAL;		(*Valor minimo da saida*)
+	rOutMax:REAL;		(*Valor maximo de saida*)
+END_VAR
+VAR
+END_VAR
+(*Esta funcao admite tanto valores negativos quanto positivos (porem a saida so sera negativa se o valor de entrada for negativo)*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Realiza uma simples escala*)
+LinTrafoLimitLess:=rValue*(rOutMax-rOutMin)/CheckDivZero(rInMax-rInMin);]]></ST>
+    </Implementation>
+    <LineIds Name="LinTrafoLimitLess">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

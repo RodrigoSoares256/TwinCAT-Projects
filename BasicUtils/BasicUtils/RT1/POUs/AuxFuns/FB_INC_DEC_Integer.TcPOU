@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_INC_DEC_Integer" Id="{3e3cc2df-3e2d-40f6-ae54-d54963ed74e2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_INC_DEC_Integer
+VAR_INPUT
+	bIncrease: BOOL;
+	bDecrease: BOOL;
+	iMaxValue:INT;
+	iMinValue:INT;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	IncreaseR_TRIG:R_TRIG;
+	DecreaseR_TRIG:R_TRIG;
+END_VAR
+VAR_IN_OUT
+	iVariable:INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IncreaseR_TRIG(CLK:= bIncrease);
+DecreaseR_TRIG(CLK:=bDecrease );
+
+IF IncreaseR_TRIG.Q AND iVariable<iMaxValue THEN
+	iVariable:=iVariable+1;
+END_IF
+IF DecreaseR_TRIG.Q  AND iVariable>iMinValue THEN
+	iVariable:=iVariable-1;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_INC_DEC_Integer">
+      <LineId Id="3" Count="7" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="DerivativeFiltered_2" Id="{6cd86a7f-d70d-47a3-9f3b-f56f03430d0b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DerivativeFiltered_2
+VAR_INPUT
+	rValue:LREAL;			(*Valor a ser derivado*)
+	rPastTime:LREAL;		(*tempo decorrido em ms*)
+	iNumOfCycles:INT:=4;
+END_VAR
+VAR_OUTPUT
+	rDerivative:LREAL;		(*valor derivado*)
+END_VAR
+VAR
+	rOldValue: LREAL;
+	rTimeToCalc:LREAL;
+	iPastCycles:INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[iPastCycles:=iPastCycles+1;
+IF iPastCycles<iNumOfCycles OR (iNumOfCycles<=0) THEN
+	RETURN;
+ELSE
+	iPastCycles:=0;
+END_IF
+IF rPastTime>0 THEN
+	rDerivative:=(rValue-rOldValue)/(rPastTime*INT_TO_LREAL(iNumOfCycles));
+ELSE
+	rDerivative:=0;
+END_IF
+rOldValue:=rValue;]]></ST>
+    </Implementation>
+    <LineIds Name="DerivativeFiltered_2">
+      <LineId Id="3" Count="10" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

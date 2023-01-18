@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_SimpleDeadBand" Id="{1a4d07d9-f46a-4d88-80f8-8a8c204e9610}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_SimpleDeadBand : BOOL
+VAR_INPUT
+	rActualValue:REAL;		(*Actual Value measured*)
+	rTolerance:REAL;			(*measurement Tolerance*)
+	rReferenceValue:REAL;	(*Reference value*)
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Dead Band calculation according to the given parameters*)
+F_SimpleDeadBand:= betwenLimits(rReferenceValue-rTolerance, rActualValue, rReferenceValue+rTolerance);]]></ST>
+    </Implementation>
+    <LineIds Name="F_SimpleDeadBand">
+      <LineId Id="3" Count="0" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

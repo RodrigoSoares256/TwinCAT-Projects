@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_SortInsertion" Id="{034c8065-68c3-4628-9753-3f3b613cfebc}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_SortInsertion : BOOL
+VAR_INPUT
+	pArToSort: POINTER TO ARRAY[cFirstSortingElement..cLastSortingElement] OF LREAL;
+	bSortUpDown: BOOL;		(*Classifica de maneira decrescente*)
+END_VAR
+VAR
+	i,j:INT;
+	eleito:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF NOT bSortUpDown THEN			(*inicia uma classificacao crescente*)
+	FOR i:= cFirstSortingElement TO cLastSortingElement DO
+		eleito:= pArToSort^[i];
+		j:=i-1;
+		WHILE ((j>0) AND (eleito < pArToSort^[j])) DO
+			pArToSort^[j+1] :=pArToSort^[j];
+			j:=j-1;
+		END_WHILE
+		pArToSort^[j+1]:=eleito;
+	END_FOR
+ELSE								(*Caso classificacao decrescente*)
+	FOR i:= cFirstSortingElement TO cLastSortingElement DO
+		eleito:= pArToSort^[i];
+		j:=i-1;
+		WHILE ((j>0) AND (eleito > pArToSort^[j])) DO
+			pArToSort^[j+1] :=pArToSort^[j];
+			j:=j-1;
+		END_WHILE
+		pArToSort^[j+1]:=eleito;
+	END_FOR
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="F_SortInsertion">
+      <LineId Id="3" Count="19" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -20,7 +20,85 @@
     <Compile Include="PlcTask.TcTTO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\AuxFuns\FB_INC_DEC_Integer.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\AuxFuns\FB_RangeMonitor.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\CO_Ntrollers\PIController.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\betwenLimits.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\CharCurve.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\CheckDivZero.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\Derivative.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\DerivativeFiltered.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\DerivativeFiltered_2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_AvgFilter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_CalcKeyPoints.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_CalcPeriod.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_RampReal.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_RMSCalc.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FB_TimeCounter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\FirstDegResponse.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\F_AdjustDecimals.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\F_AdjustPrecision.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\F_SimpleDeadBand.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\Integral.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\LinTrafo.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\LinTrafoLimitLess.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\SawTooth.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\TriangleWave.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\OrderAlgorithms\F_SortBubble.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\OrderAlgorithms\F_SortInsertion.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\SpecialTriggers\FB_ChangeTrig.TcPOU">
@@ -29,10 +107,24 @@
     <Compile Include="POUs\SpecialTriggers\prgTrigTesting.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\SpecialTrigs\FB_Int_Trig.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\SpecialTrigs\FB_Int_TrigFall.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\SpecialTrigs\FB_Int_TrigRise.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\CO_Ntrollers" />
+    <Folder Include="POUs\Math" />
+    <Folder Include="POUs\AuxFuns" />
+    <Folder Include="POUs\SpecialTrigs" />
+    <Folder Include="POUs\OrderAlgorithms" />
     <Folder Include="POUs\SpecialTriggers" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />

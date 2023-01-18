@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_SortBubble" Id="{685f2e02-0dc4-475d-bcfa-dbffe04d1f76}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_SortBubble : BOOL
+VAR_INPUT
+	pArToSort: POINTER TO ARRAY[cFirstSortingElement..cLastSortingElement] OF LREAL;
+	bSortUpDown: BOOL;		(*Classifica de maneira decrescente*)
+END_VAR
+VAR
+	i: UINT;
+	j: UINT;
+	aux: LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bSortUpDown THEN
+	FOR i:= cFirstSortingElement TO cLastSortingElement DO
+		FOR j:=cFirstSortingElement TO (cLastSortingElement-1) DO
+			IF pArToSort^[j] < pArToSort^[j+1] THEN
+				aux := pArToSort^[j];
+				pArToSort^[j] := pArToSort^[j+1];
+				pArToSort^[j+1] := aux;
+			END_IF
+		END_FOR
+	END_FOR
+ELSE
+	FOR i:= cFirstSortingElement TO cLastSortingElement DO
+		FOR j:=cFirstSortingElement TO (cLastSortingElement-1) DO
+			IF pArToSort^[j] > pArToSort^[j+1] THEN
+				aux := pArToSort^[j];
+				pArToSort^[j] := pArToSort^[j+1];
+				pArToSort^[j+1] := aux;
+			END_IF
+		END_FOR
+	END_FOR
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="F_SortBubble">
+      <LineId Id="3" Count="19" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="TriangleWave" Id="{c750361c-ef56-4887-ba39-1ca49e93f16e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK TriangleWave
+VAR_INPUT
+	rAmplitude:REAL;		(*Amplitude da onda triangular (valor deve ser maior que zero)*)
+	rRisingtime:REAL;		(*Tempo de subida da onda triangular em segundos*)
+	rFallingTime:REAL;	(*Tempo de descida da onda triangular em segundos*)
+	bStart:BOOL;			(*inicia geracao da onda*)
+END_VAR
+VAR_OUTPUT
+	rOutput:REAL;			(*Saida da onda triangular*)
+END_VAR
+VAR
+	rising: SawTooth;
+	falling: SawTooth;
+	i: INT := 1;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF rAmplitude>0 THEN
+	CASE i OF
+	1:
+		rising(rPeriod:= rRisingtime, rAmplitude:= rAmplitude, bStart:=bStart , rOutPut=>rOutput );
+		IF rising.rOutPut = rAmplitude THEN
+			i:=2;
+		END_IF
+	2:
+		falling(rPeriod:= rFallingTime, rAmplitude:=rAmplitude , bStart:= bStart, rOutPut=> );
+		rOutput:=rAmplitude- falling.rOutPut;
+		IF falling.rOutPut = rAmplitude THEN
+			rOutput:=0;
+			i:=1;
+		END_IF
+	END_CASE
+ELSE
+	rOutput:=0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="TriangleWave">
+      <LineId Id="3" Count="16" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

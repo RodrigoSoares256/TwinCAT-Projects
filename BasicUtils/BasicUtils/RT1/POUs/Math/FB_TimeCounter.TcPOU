@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_TimeCounter" Id="{f197848a-d37f-4993-89da-58df11eabed1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TimeCounter
+VAR_INPUT
+	tIn: TIME;
+END_VAR
+VAR_OUTPUT
+	bOutPulse: BOOL;
+END_VAR
+VAR
+	timer_01: TON;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Este bloco funcional fornece um pulso na saida a cada período de tempo pre determinado*)
+timer_01(IN:= NOT timer_01.Q , PT:= tIn , Q=>bOutPulse , ET=> );
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TimeCounter">
+      <LineId Id="3" Count="1" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

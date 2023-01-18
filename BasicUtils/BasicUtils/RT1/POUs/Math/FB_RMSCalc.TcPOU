@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RMSCalc" Id="{a4b70e58-5917-460d-b250-dd5a456d07d0}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RMSCalc
+VAR_INPUT
+	rInput:LREAL;
+	rPastTime:LREAL;
+	bReset: BOOL;
+	rPeriod: LREAL;
+END_VAR
+VAR_OUTPUT
+	rRmsValue:LREAL;
+END_VAR
+VAR
+	rmsIntegral:Integral;
+END_VAR
+(*Bloco funcional calcula o valor RMS de uma onda senoidal*)
+(*Ha limitacoes quanto à frequencia utilizada (os testes foram feitos com frequencias de ate 12hz)*)
+(*e quanto ao scan do plc (task de 2ms, mais baixas apresentam problemas)*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bReset THEN
+	rRmsValue:=SQRT(1/rPeriod *(rmsIntegral.rIntegral));
+END_IF
+rmsIntegral(rInput:=EXPT(rInput,2),rPastTime:=rPastTime , bReset:=bReset);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RMSCalc">
+      <LineId Id="3" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

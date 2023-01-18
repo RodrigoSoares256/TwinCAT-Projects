@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="DerivativeFiltered" Id="{c1f34804-34d0-4fab-a696-66911fac2d9d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK DerivativeFiltered
+VAR_INPUT
+	rValue:LREAL;					(*Valor a ser derivado*)
+	tFilterTime:TIME;				(*Tempo a considerar no filtro derivativo*)
+END_VAR
+VAR_OUTPUT
+	rDerivative:LREAL;				(*valor derivado*)
+END_VAR
+VAR
+	rOldValue: LREAL;
+	TimeCounter: FB_TimeCounter;	(*Conta o tempo para o filtro da derivada*)
+END_VAR
+(*Calcula a derivada baseado num tempo estabelecido na variavel *)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[TimeCounter(tIn:=tFilterTime);
+(*rPastTime:=;*)
+IF tFilterTime>t#0ms AND TimeCounter.bOutPulse THEN
+	rDerivative:=(rValue-rOldValue)/(TIME_TO_LREAL(tFilterTime)/1000);
+	rOldValue:=rValue;
+ELSIF tFilterTime=t#0ms THEN
+	rDerivative:=0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="DerivativeFiltered">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

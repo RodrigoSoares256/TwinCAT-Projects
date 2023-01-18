@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_AdjustPrecision" Id="{70d1a671-a038-4c5b-be18-5a8740126714}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_AdjustPrecision : LREAL (*Ajusta a precisao dos numeros em ponto flutuante*)
+VAR_INPUT
+	in:LREAL;
+	iPrecision:INT;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[F_AdjustPrecision:= SEL(in<0,FLOOR(in*EXPT(10,iPrecision))/EXPT(10,iPrecision),-FLOOR(ABS(in)*EXPT(10,iPrecision))/EXPT(10,iPrecision));]]></ST>
+    </Implementation>
+    <LineIds Name="F_AdjustPrecision">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="betwenLimits" Id="{b6d87c8e-bdd7-4a2d-9244-66436d426c9e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION betwenLimits : BOOL
+VAR_INPUT
+	rLower:REAL;			(*limite inferior*)
+	rInput:REAL;			(*entrada*)
+	rUpper:REAL;			(*Limite superior*)
+END_VAR
+VAR
+END_VAR
+(*Esta funcao retorna true caso a entrada esteja entre os limites rLower e rUpper*)
+(*Nao importando se o Lower e maior ou menor que o upper*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[betwenLimits:=(rInput>=rLower) AND (rInput<=rUpper) OR  (rInput<=rLower) AND (rInput>=rUpper);]]></ST>
+    </Implementation>
+    <LineIds Name="betwenLimits">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

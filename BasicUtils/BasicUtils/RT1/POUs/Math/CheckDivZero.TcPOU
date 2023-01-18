@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="CheckDivZero" Id="{a9f903f9-f88a-4009-a599-edd6afc82439}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION CheckDivZero : REAL
+VAR_INPUT
+	rInput:REAL;	(*Entrada a ser comparada*)
+END_VAR
+VAR
+END_VAR
+(*Apenas verifica se a entrada e igual a zero para poder realizar um divisao*)
+(*just check if the input is zero to make a division operation*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*Apenas verifica se a entrada dessa funcao é igual a zero*)
+IF rInput <> 0 THEN
+	CheckDivZero := rInput;
+ELSE
+	CheckDivZero:=1;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="CheckDivZero">
+      <LineId Id="3" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

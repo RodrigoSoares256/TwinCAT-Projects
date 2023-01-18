@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_AdjustDecimals" Id="{11a34447-dc89-4624-bbd9-582a12813833}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_AdjustDecimals : LREAL
+VAR_INPUT
+	rIn:LREAL;
+	iPrecision:UINT:=2;
+END_VAR
+VAR
+	rInternal: LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF rIn <> 0 AND iPrecision<>0 THEN
+	rInternal:=rIn*EXPT(10,iPrecision);
+	rInternal:=FLOOR(rInternal);
+	F_AdjustDecimals:=rInternal/EXPT(10,iPrecision);
+ELSE 
+	F_AdjustDecimals:=0;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="F_AdjustDecimals">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

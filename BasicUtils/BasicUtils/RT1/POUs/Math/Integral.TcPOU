@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="Integral" Id="{bdedf828-70cb-4a22-bf0e-7a1b38319994}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK Integral
+VAR_INPUT
+	rInput:LREAL;		(*Valor de entrada*)
+	rPastTime:LREAL;	(*tempo decorrido em Seg*)
+	bReset: BOOL;	(*reinicia o bloco da integral*)
+END_VAR
+VAR_OUTPUT
+	rIntegral:LREAL;	(*integral calculada*)
+END_VAR
+VAR
+	rOldIntegral: LREAL;	(*Ultimo valor da integral*)
+END_VAR
+(*Este bloco funcional calcula a integral de uma funcao*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF bReset THEN
+	rIntegral:=0;
+	rOldIntegral:=0;
+ELSE
+	rIntegral:=rPastTime*rInput+rOldIntegral;
+END_IF
+rOldIntegral:=rIntegral;]]></ST>
+    </Implementation>
+    <LineIds Name="Integral">
+      <LineId Id="3" Count="5" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

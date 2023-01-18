@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="SawTooth" Id="{11b64814-3f11-4ec0-ad8c-77151b0a5f6e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK SawTooth
+VAR_INPUT
+	rPeriod:LREAL;		(*Periodo da onda dente de serra em segundos (so sao permitidos valores positivos)*)
+	rAmplitude:LREAL;		(*Amplitude maxima da onda dente de serra (so sao permitidos valores positivos)*)
+	bStart: BOOL;			(*inicia a geracao da onda*)
+END_VAR
+VAR_OUTPUT
+	rOutPut: LREAL;		(*Sinal de saida*)
+END_VAR
+VAR
+	sawToothTON: TON;		(*Conta o tempo de subida da onda dente de serra*)
+END_VAR
+(*Este bloco funcional gera uma onda dente de serra, na qual e possivel determinar o periodo e a maxima amplitude do sinal*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF (rPeriod>0) AND rAmplitude>0 THEN
+	sawToothTON(IN:=bStart AND NOT sawToothTON.Q,PT:=REAL_TO_TIME(rPeriod*1000));
+	rOutPut:=( TIME_TO_REAL(sawToothTON.ET)/1000)*rAmplitude/CheckDivZero(rPeriod);
+ELSE
+	rOutPut:=0;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="SawTooth">
+      <LineId Id="3" Count="4" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

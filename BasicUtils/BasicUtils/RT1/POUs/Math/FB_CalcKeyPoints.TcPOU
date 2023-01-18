@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CalcKeyPoints" Id="{ee6d6e18-f452-455b-9689-4520e26eba7a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CalcKeyPoints
+VAR_INPUT
+	bStartNow:BOOL;
+	rInY,rInX:LREAL;
+	rPointGiven:LREAL;
+	rToleranceGiven:LREAL:=0.1;
+END_VAR
+VAR_OUTPUT
+	rMin:LREAL;
+	rMax:LREAL;
+	rGivenPointY:LREAL;
+END_VAR
+VAR
+	startNowR_TRIG:R_TRIG;
+	givenPointR_TRIG:R_TRIG;
+	rInternalMin:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[startNowR_TRIG(CLK:=bStartNow);
+IF startNowR_TRIG.Q THEN
+	rMax:=0;
+	rMin:=0;
+	rGivenPointY:=0;
+	rInternalMin:=0;
+END_IF
+IF bStartNow THEN
+	rMax:=MAX(rMax,rInY);
+	rInternalMin:=MIN(rInternalMin,rInY);	
+END_IF
+
+givenPointR_TRIG(CLK:=betwenLimits(rPointGiven-rToleranceGiven,rInX,rPointGiven+rToleranceGiven));
+IF givenPointR_TRIG.Q THEN
+	rMin:=rInternalMin;
+	rGivenPointY:=rInY;
+END_IF
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_CalcKeyPoints">
+      <LineId Id="3" Count="16" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

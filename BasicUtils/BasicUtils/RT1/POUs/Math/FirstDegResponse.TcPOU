@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FirstDegResponse" Id="{e874b6d4-c4a4-4ce8-9eeb-f0da9db19966}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FirstDegResponse
+VAR_INPUT
+	rTime:REAL;			(*Time current*)
+	rDec:REAL;			(*Coeficient*)
+	rInput:REAL;		(*Degree input*)
+END_VAR
+VAR_OUTPUT
+	rOutput:REAL;
+END_VAR
+VAR
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rOutput:= rInput*(1-EXPT(2.71,-rTime*rDec));]]></ST>
+    </Implementation>
+    <LineIds Name="FirstDegResponse">
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

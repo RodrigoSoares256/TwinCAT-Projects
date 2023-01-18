@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CalcPeriod" Id="{9449e551-e2f8-4b1c-a2ad-3754be37a6f5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CalcPeriod
+VAR_INPUT
+	rWave:LREAL;
+	rDCValue:LREAL;	(*distancia entre 0 e o valor medio da onda (Valor DC)*)
+END_VAR
+VAR_OUTPUT
+	rPeriod: LREAL;
+	bNewStarted:BOOL;
+END_VAR
+VAR
+	newWaveStartedR_TRIG:R_TRIG;
+	rRelativeInput: LREAL;
+	rOldRelativeInput: LREAL;
+	periodTON:TON;
+END_VAR
+(*Este bloco funcional tem por objetivo calcular o periodo de uma onda senoidal*)
+(*Dada a entrada o mesmo fornece: o periodo(rPeriod) e um borda de subida na variavel (bNewPeriodStarted)*)
+(*Toda vez que um novo periodo é iniciado*)]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[rRelativeInput:=rWave-rDCValue;
+newWaveStartedR_TRIG(CLK:=(rRelativeInput>0) AND (rOldRelativeInput <0));
+rOldRelativeInput:=rRelativeInput;
+IF newWaveStartedR_TRIG.Q THEN
+	rPeriod:=TIME_TO_LREAL(periodTON.ET)/1000;
+END_IF
+periodTON(IN:=NOT newWaveStartedR_TRIG.Q , PT:=t#1d);
+bNewStarted:=newWaveStartedR_TRIG.Q;]]></ST>
+    </Implementation>
+    <LineIds Name="FB_CalcPeriod">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

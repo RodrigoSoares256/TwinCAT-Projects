@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AvgFilter" Id="{7ad75388-aef3-4af7-8d48-a9831a2d8e61}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AvgFilter
+VAR_INPUT
+	rIn:LREAL;
+	iNumAvg:INT:=4;
+END_VAR
+VAR_OUTPUT
+	rOut:LREAL;
+END_VAR
+VAR
+	ar:ARRAY[1..10] OF LREAL;
+	i: INT;
+	rSum: LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:= iNumAvg TO 2 BY -1 DO
+	ar[i]:=ar[i-1];
+END_FOR
+ar[1]:=rIn;
+rSum:=0;
+FOR i:= 1 TO iNumAvg DO
+	rSum:=rSum+ar[i];
+END_FOR
+IF iNumAvg <> 0 THEN
+	rOut:=rSum/INT_TO_LREAL(iNumAvg);
+END_IF
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AvgFilter">
+      <LineId Id="3" Count="11" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

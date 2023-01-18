@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_RangeMonitor" Id="{6b4db17a-5484-44f3-93cd-194d3aae4688}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RangeMonitor
+VAR_INPUT
+	rIn,rMax,rMin:LREAL;
+	tTimeFilter:TIME;
+	bReset: BOOL;
+
+END_VAR
+VAR_OUTPUT
+	bOut:BOOL;
+END_VAR
+VAR
+	t1:TON;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+t1(IN:=rIn>rMax OR rIn<rMin , PT:= tTimeFilter);
+
+IF t1.Q AND NOT bReset THEN
+	bOut:=TRUE;
+ELSIF bReset THEN
+	bOut:=FALSE;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RangeMonitor">
+      <LineId Id="3" Count="6" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
