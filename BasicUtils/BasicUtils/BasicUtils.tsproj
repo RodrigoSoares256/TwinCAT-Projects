@@ -2,9 +2,7 @@
 <TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.35">
 	<Project ProjectGUID="{3FC22888-D6BC-4E8D-8AF2-A09BB4011F37}" Target64Bit="true" ShowHideConfigurations="#x3c6">
 		<System>
-			<Settings MaxCpus="2">
-				<Cpu CpuId="1"/>
-			</Settings>
+			<Settings MaxCpus="2"/>
 			<Licenses IgnoreProjectLicenses="true">
 				<Target>
 					<ManualSelect>{BDCC0070-42D5-49AE-ABF1-1D4434813D60}</ManualSelect>

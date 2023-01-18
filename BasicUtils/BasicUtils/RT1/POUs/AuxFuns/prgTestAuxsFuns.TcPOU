@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="prgTestAuxsFuns" Id="{ec954905-60b3-4502-9520-151971f6a1fe}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgTestAuxsFuns
+VAR
+	blink:FB_Blink;
+	rBlinkOn:LREAL:=0.5;
+	rBlinkOff:LREAL:=0.3;
+	bOutputBlink: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[blink(tON:= LREAL_TO_TIME(rBlinkOn*1000), tOff:=LREAL_TO_TIME(rBlinkOff*1000) , output=> bOutputBlink);
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgTestAuxsFuns">
+      <LineId Id="5" Count="0" />
+      <LineId Id="10" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
