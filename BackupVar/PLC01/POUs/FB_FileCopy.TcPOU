@@ -1,0 +1,176 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_FileCopy" Id="{14eb40bd-2218-4109-86f8-634f0288c974}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_FileCopy
+VAR_INPUT
+	sSrcNetId			: T_AmsNetId;	(* TwinCAT network address of the source file *)
+	sSrcPathName		: T_MaxString;	(* Source file path and name *)
+	sDestNetId			: T_AmsNetId;	(* TwinCAT network address of the destination file *)
+	sDestPathName		: T_MaxString;  (* Destination file path and name *)
+	bExecute			: BOOL;			(* Rising edge start fb execution *)
+	tTimeOut			: TIME := DEFAULT_ADS_TIMEOUT;(* Max. ADS timeout time *)
+END_VAR
+VAR_OUTPUT
+	bBusy				:BOOL;(* TRUE => File copy execution in progress, FALSE => File copy execution idle *)
+	bError				:BOOL;(* TRUE => Error, FALSE => No error *)
+	nErrId				:UDINT;(* Error code *)
+END_VAR
+VAR
+	fbFileOpen			:FB_FileOpen;
+	fbFileClose			:FB_FileClose;
+	fbFileRead			:FB_FileRead;
+	fbFileWrite			:FB_FileWrite;
+
+	hSrcFile				:UINT	:= 0;(* File handle of the source file *)
+	hDestFile			:UINT	:= 0;(* File handle of the destination file *)
+
+	Step				:DWORD;
+	RisingEdge			:R_TRIG;
+
+	buffRead				:ARRAY[1..1000] OF BYTE;(* Buffer *)
+	cbReadLength		:UDINT := 0;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[RisingEdge(CLK:=bExecute);
+
+CASE Step OF
+	0:	(* Idle state *)
+		IF RisingEdge.Q THEN
+			bBusy := TRUE;
+			bError:= FALSE;
+			nErrId:=0;
+			Step := 1;
+			cbReadLength:=0;
+			hSrcFile:=0;
+			hDestFile:=0;
+		END_IF
+
+	1:	(* Open source file *)
+		fbFileOpen( bExecute := FALSE );
+		fbFileOpen( sNetId := sSrcNetId, sPathName := sSrcPathName,
+					nMode := FOPEN_MODEREAD OR FOPEN_MODEBINARY,
+					ePath := PATH_GENERIC, tTimeout := tTimeOut, bExecute := TRUE );
+		Step := Step + 1;
+	2:
+		fbFileOpen( bExecute := FALSE );
+		IF NOT fbFileOpen.bBusy THEN
+			IF fbFileOpen.bError THEN
+				nErrId := fbFileOpen.nErrId;
+				bError := TRUE;
+				Step := 50;
+			ELSE
+				hSrcFile := fbFileOpen.hFile;
+				Step := Step + 1;
+			END_IF
+		END_IF
+
+	3:	(* Open destination file *)
+		fbFileOpen( bExecute := FALSE );
+		fbFileOpen( sNetId := sDestNetId, sPathName := sDestPathName,
+					nMode := FOPEN_MODEWRITE OR FOPEN_MODEBINARY,
+					ePath := PATH_GENERIC, tTimeout := tTimeOut, bExecute := TRUE );
+		Step := Step+1;
+	4:
+		fbFileOpen( bExecute := FALSE );
+		IF NOT fbFileOpen.bBusy THEN
+			IF fbFileOpen.bError THEN
+				nErrId := fbFileOpen.nErrId;
+				bError := TRUE;
+				Step := 50;
+			ELSE
+				hDestFile := fbFileOpen.hFile;
+				Step := Step + 1;
+			END_IF
+		END_IF
+
+	5:	(* Read data from source file *)
+		cbReadLength := 0;
+		fbFileRead( bExecute:= FALSE );
+		fbFileRead( sNetId:=sSrcNetId, hFile:=hSrcFile,
+					pReadBuff:= ADR(buffRead), cbReadLen:= SIZEOF(buffRead),
+					bExecute:=TRUE, tTimeout:=tTimeOut );
+		Step := Step + 1;
+	6:
+		fbFileRead( bExecute:= FALSE );
+		IF NOT fbFileRead.bBusy THEN
+			IF fbFileRead.bError THEN
+				nErrId := fbFileRead.nErrId;
+				bError := TRUE;
+				Step := 50;
+			ELSE
+				cbReadLength := fbFileRead.cbRead;
+				Step := Step + 1;
+			END_IF
+		END_IF
+
+	7:	(* Write data to destination file *)
+		fbFileWrite( bExecute := FALSE );
+		fbFileWrite( sNetId:=sDestNetId, hFile:=hDestFile,
+					pWriteBuff:= ADR(buffRead), cbWriteLen:= cbReadLength,
+					bExecute:=TRUE, tTimeout:=tTimeOut );
+		Step := Step + 1;
+	8:
+		fbFileWrite( bExecute := FALSE );
+		IF NOT fbFileWrite.bBusy THEN
+			IF fbFileWrite.bError THEN
+				nErrId := fbFileWrite.nErrId;
+				bError := TRUE;
+				Step := 50;
+			ELSE
+				IF fbFileRead.bEOF THEN (* Check if the EOF flag ist set *)
+					Step := 50;	(* Cleanup: close the destination and source files *)
+				ELSE
+					Step := 5; (* Repeat reading/writing *)
+				END_IF
+			END_IF
+		END_IF
+
+	30:	(* Close the destination file *)
+		fbFileClose( bExecute := FALSE );
+		fbFileClose( sNetId:=sDestNetId, hFile:=hDestFile, bExecute:=TRUE, tTimeout:=tTimeOut );
+		Step := Step + 1;
+	31:
+		fbFileClose( bExecute := FALSE );
+		IF NOT fbFileClose.bBusy THEN
+			IF fbFileClose.bError THEN
+				nErrId := fbFileClose.nErrId;
+				bError := TRUE;
+			END_IF
+			Step := 50;
+			hDestFile := 0;
+		END_IF
+
+	40: (* Close source file *)
+		fbFileClose( bExecute := FALSE );
+		fbFileClose( sNetId:=sSrcNetId, hFile:=hSrcFile, bExecute:=TRUE, tTimeout:=tTimeOut );
+		Step := Step + 1;
+	41:
+		fbFileClose( bExecute := FALSE );
+		IF NOT fbFileClose.bBusy THEN
+			IF fbFileClose.bError THEN
+				nErrId := fbFileClose.nErrId;
+				bError := TRUE;
+			END_IF
+			Step := 50;
+			hSrcFile := 0;
+		END_IF
+
+	50: (* Error or ready => Cleanup *)
+		IF ( hDestFile <> 0 ) THEN
+			Step := 30; (* Close the destination file*)
+		ELSIF (hSrcFile <> 0 ) THEN
+			Step := 40; (* Close the source file *)
+		ELSE
+			Step := 0;	(* Ready *)
+			bBusy := FALSE;
+		END_IF
+
+END_CASE
+]]></ST>
+    </Implementation>
+    <LineIds Name="FB_FileCopy">
+      <LineId Id="3" Count="134" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="st_DirContentInfo" Id="{2d62d570-003a-42ad-93d6-d768ce66999a}">
+    <Declaration><![CDATA[TYPE st_DirContentInfo :
+STRUCT
+	fileName:T_MaxString;
+	dataCriacao:DT;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

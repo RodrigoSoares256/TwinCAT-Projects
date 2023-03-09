@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="prgFileManipulation" Id="{ad164574-7650-4504-b26f-6485823001bb}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgFileManipulation
+VAR
+	//Local
+	findFiles:FB_EnumFindFileList;
+	path: T_MaxString := 'C:\Relat';
+	filesFound:ARRAY[1..iNumFiles] OF ST_FindFileEntry;
+	filesInfo:ARRAY[1..iNumFiles] OF st_DirContentInfo;
+	nNumFiles: UDINT;
+	bFindFiles: BOOL;
+	bErr: BOOL;
+	nErr: UDINT;
+	i: UINT;
+	i2: UINT;
+	searchPath: T_MaxString;
+	findFilesFinished:F_TRIG;
+	deleteLocalFile: BOOL;
+
+	
+	//USB
+	findFilesUSB:FB_EnumFindFileList;
+	pathUSB: T_MaxString := 'D:';
+	filesFoundUSB:ARRAY[1..iNumFiles] OF ST_FindFileEntry;
+	filesInfoUSB:ARRAY[1..iNumFiles] OF st_DirContentInfo;
+	nNumFilesUSB: UDINT;
+	bFindFilesUSB: BOOL;
+	bErrUSB: BOOL;
+	nErrUSB: UDINT;
+	iUSB: UINT;
+	i2USB: UINT;
+	searchPathUSB: T_MaxString;
+	findFilesFinishedUSB:F_TRIG;
+	deleteUSBFile: BOOL;
+
+	
+	//File copy
+	
+	fileCopy:FB_FileCopy;
+	fileDelete:FB_FileDelete;
+	selectedLocalFile:T_MaxString;
+	selectedUSBFile:T_MaxString;
+	selectedRowLocal:INT;
+	selectedRowUSB:INT;
+	copyLocalTOUSB: BOOL;
+	copyUSBToLocal: BOOL;
+
+	sFullCopyPathLocal: T_MaxString;
+	sFullCopyPathUSB: T_MaxString;
+	trigCopyLocalUSB, trigCopyUSBLocal, trigDelLocal, trigDelUSB:R_TRIG;
+	copyEndTrig, delEndTrig:F_TRIG;
+	sCopyMsg: STRING;
+	resetUpdateVar:FB_AutoResetBool;
+END_VAR
+VAR CONSTANT
+	iNumFiles:UINT:=10;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[searchPath:= concat(path, '\*.*');
+findFiles(
+	sNetId:='' , 
+	sPathName:= searchPath, 
+	eCmd:=, 
+	pFindList:= ADR(filesFound), 
+	cbFindList:= SIZEOF(filesFound), 
+	bExecute:= bFindFiles OR GVL.updateFileList, 
+	tTimeout:= T#10S, 
+	bBusy=> , 
+	bError=> bErr, 
+	nErrID=> nErr, 
+	bEOE=> , 
+	nFindFiles=> nNumFiles);
+
+findFilesFinished(CLK:=findFiles.bBusy);
+
+IF findFilesFinished.Q THEN
+	FOR i:= 1 TO iNumFiles DO
+		filesInfo[i].fileName:= '';
+		filesInfo[i].dataCriacao:= DT#1970-1-1-0:0:0;
+	END_FOR
+	i:=i2:= 1;
+
+	WHILE i<= iNumFiles AND_THEN filesFound[i].sFileName <> '' DO
+		IF filesFound[i].fileAttributes.bArchive THEN
+			filesInfo[i2].fileName:= filesFound[i].sFileName;
+			filesInfo[i2].dataCriacao:= FILETIME_TO_DT(filesFound[i].creationTime);
+			i2:=i2+1;
+		END_IF
+		i:=i+1;
+	END_WHILE
+END_IF
+
+//USB
+searchPathUSB:= concat(pathUSB, '\*.*');
+findFilesUSB(
+	sNetId:='' , 
+	sPathName:= searchPathUSB, 
+	eCmd:=, 
+	pFindList:= ADR(filesFoundUSB), 
+	cbFindList:= SIZEOF(filesFoundUSB), 
+	bExecute:= bFindFilesUSB OR GVL.updateFileList, 
+	tTimeout:= T#10S, 
+	bBusy=> , 
+	bError=> bErrUSB, 
+	nErrID=> nErrUSB, 
+	bEOE=> , 
+	nFindFiles=> nNumFilesUSB);
+
+findFilesFinishedUSB(CLK:=findFilesUSB.bBusy);	
+
+IF findFilesFinishedUSB.Q THEN
+	
+	FOR i:=1 TO iNumFiles DO
+		filesInfoUSB[i].fileName:='';
+		filesInfoUSB[i].dataCriacao:= DT#1970-1-1-0:0:0;
+	END_FOR
+	iUSB:=i2USB:= 1;
+    
+    WHILE iUSB<= iNumFiles AND_THEN filesFoundUSB[iUSB].sFileName <> '' DO
+    	IF filesFoundUSB[iUSB].fileAttributes.bArchive THEN
+    		filesInfoUSB[i2USB].fileName:= filesFoundUSB[iUSB].sFileName;
+    		filesInfoUSB[i2USB].dataCriacao:= FILETIME_TO_DT(filesFoundUSB[iUSB].creationTime);
+    		i2USB:=i2USB+1;
+    	END_IF
+    	iUSB:=iUSB+1;
+    END_WHILE
+END_IF
+
+IF selectedRowLocal>= 1 AND selectedRowLocal <= iNumFiles THEN
+	selectedLocalFile:=filesInfo[selectedRowLocal].fileName;
+END_IF	
+IF selectedRowUSB>= 1 AND selectedRowUSB <= iNumFiles THEN
+	selectedUSBFile:=filesInfoUSB[selectedRowUSB].fileName;
+END_IF	
+
+sFullCopyPathLocal:= concat(path,concat('\',selectedLocalFile));
+sFullCopyPathUSB:= concat(pathUSB,concat('\',selectedUSBFile));
+
+trigCopyLocalUSB(CLK:= copyLocalTOUSB);
+trigCopyUSBLocal(CLK:= copyUSBToLocal);
+trigDelLocal(CLK:= deleteLocalFile);
+trigDelUSB(CLK:= deleteUSBFile);
+
+IF trigCopyLocalUSB.Q THEN
+	fileCopy.sSrcPathName:=sFullCopyPathLocal;
+	fileCopy.sDestPathName:= concat(pathUSB,concat('\',selectedLocalFile));
+ELSIF trigCopyUSBLocal.Q THEN
+	fileCopy.sSrcPathName:=sFullCopyPathUSB;
+	fileCopy.sDestPathName:= concat(path,concat('\',selectedUSBFile));;	
+END_IF
+
+fileCopy(
+	sSrcNetId:= '', 
+	sDestNetId:= '', 
+	bExecute:=trigCopyLocalUSB.Q OR trigCopyUSBLocal.Q , 
+	tTimeOut:= T#20S, 
+	bBusy=> , 
+	bError=> , 
+	nErrId=> );
+	
+copyEndTrig(CLK:=fileCopy.bBusy);
+IF copyEndTrig.Q THEN
+	IF NOT fileCopy.bError THEN
+		sCopyMsg:='Arquivo copiado com sucesso';
+	ELSE 
+		sCopyMsg:= concat('Erro na copia do arquivo : ', UDINT_TO_STRING(fileCopy.nErrId));
+	END_IF
+	GVL.updateFileList:=TRUE;
+END_IF
+
+
+
+IF trigDelLocal.Q THEN
+	fileDelete.sPathName:= sFullCopyPathLocal;
+ELSIF trigDelUSB.Q THEN
+	fileDelete.sPathName:= sFullCopyPathUSB;	
+END_IF
+
+fileDelete(
+	sNetId:= '', 
+	sPathName:= , 
+	ePath:= , 
+	bExecute:= trigDelLocal.Q OR trigDelUSB.Q , 
+	tTimeout:= T#20S, 
+	bBusy=> , 
+	bError=> , 
+	nErrId=> );
+	
+delEndTrig(CLK:= fileDelete.bBusy);
+IF delEndTrig.Q THEN
+	GVL.updateFileList:=TRUE;
+END_IF
+
+//put this on the last line
+resetUpdateVar(tResetTime:=T#100MS , bReset:= GVL.updateFileList);
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgFileManipulation">
+      <LineId Id="66" Count="0" />
+      <LineId Id="7" Count="11" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="197" Count="0" />
+      <LineId Id="199" Count="0" />
+      <LineId Id="198" Count="0" />
+      <LineId Id="212" Count="1" />
+      <LineId Id="215" Count="0" />
+      <LineId Id="214" Count="0" />
+      <LineId Id="202" Count="8" />
+      <LineId Id="200" Count="1" />
+      <LineId Id="84" Count="1" />
+      <LineId Id="87" Count="13" />
+      <LineId Id="216" Count="0" />
+      <LineId Id="101" Count="0" />
+      <LineId Id="218" Count="0" />
+      <LineId Id="217" Count="0" />
+      <LineId Id="243" Count="2" />
+      <LineId Id="248" Count="0" />
+      <LineId Id="246" Count="0" />
+      <LineId Id="219" Count="0" />
+      <LineId Id="222" Count="8" />
+      <LineId Id="220" Count="0" />
+      <LineId Id="150" Count="1" />
+      <LineId Id="158" Count="0" />
+      <LineId Id="160" Count="0" />
+      <LineId Id="162" Count="1" />
+      <LineId Id="161" Count="0" />
+      <LineId Id="159" Count="0" />
+      <LineId Id="152" Count="0" />
+      <LineId Id="164" Count="0" />
+      <LineId Id="167" Count="1" />
+      <LineId Id="170" Count="0" />
+      <LineId Id="334" Count="0" />
+      <LineId Id="332" Count="0" />
+      <LineId Id="172" Count="0" />
+      <LineId Id="171" Count="0" />
+      <LineId Id="173" Count="0" />
+      <LineId Id="175" Count="1" />
+      <LineId Id="178" Count="0" />
+      <LineId Id="177" Count="0" />
+      <LineId Id="174" Count="0" />
+      <LineId Id="83" Count="0" />
+      <LineId Id="139" Count="1" />
+      <LineId Id="142" Count="0" />
+      <LineId Id="144" Count="3" />
+      <LineId Id="47" Count="0" />
+      <LineId Id="179" Count="1" />
+      <LineId Id="182" Count="1" />
+      <LineId Id="185" Count="0" />
+      <LineId Id="188" Count="1" />
+      <LineId Id="186" Count="0" />
+      <LineId Id="260" Count="0" />
+      <LineId Id="184" Count="0" />
+      <LineId Id="325" Count="0" />
+      <LineId Id="327" Count="3" />
+      <LineId Id="335" Count="1" />
+      <LineId Id="331" Count="0" />
+      <LineId Id="316" Count="8" />
+      <LineId Id="315" Count="0" />
+      <LineId Id="337" Count="4" />
+      <LineId Id="259" Count="0" />
+      <LineId Id="249" Count="0" />
+      <LineId Id="258" Count="0" />
+      <LineId Id="190" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

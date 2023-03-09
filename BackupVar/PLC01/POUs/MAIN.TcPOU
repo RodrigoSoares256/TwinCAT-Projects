@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="MAIN" Id="{092db28a-b308-4dc7-9e44-1fe289d730d9}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	aStructs:ARRAY[1..20] OF st01;
+	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[prgFileHnd();
+prgFileManipulation();
+]]></ST>
+    </Implementation>
+    <LineIds Name="MAIN">
+      <LineId Id="2" Count="0" />
+      <LineId Id="8" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
