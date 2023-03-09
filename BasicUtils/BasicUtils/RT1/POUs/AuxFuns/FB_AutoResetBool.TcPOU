@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_AutoResetBool" Id="{8357cf6b-ead3-4283-aaa5-51cdea9956c2}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_AutoResetBool
+VAR_INPUT
+	tResetTime:TIME:=T#100MS;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	t1:TON;
+END_VAR
+VAR_IN_OUT
+	bReset: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[t1(IN:=bReset , PT:= tResetTime);
+IF t1.Q THEN
+	bReset:=FALSE;
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_AutoResetBool">
+      <LineId Id="3" Count="2" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
