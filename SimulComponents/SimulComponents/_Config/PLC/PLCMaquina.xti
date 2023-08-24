@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<TcSmItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4024.47" ClassName="CNestedPlcProjDef">
+	<Project GUID="{CBCD14BA-4187-46B2-A43F-FEDE31033C01}" Name="PLCMaquina" PrjFilePath="..\..\PLCMaquina\PLCMaquina.plcproj" TmcFilePath="..\..\PLCMaquina\PLCMaquina.tmc" ReloadTmc="true" AmsPort="852" FileArchiveSettings="#x000e" SymbolicMapping="true">
+		<Instance Id="#x08502040" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcPath="PLCMaquina\PLCMaquina.tmc" TmcHash="{B54D8531-AE64-C988-41EA-56DD50867DAE}">
+			<Name>PLCMaquina Instance</Name>
+			<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+			<Vars VarGrpType="1">
+				<Name>PlcTask Inputs</Name>
+				<Var>
+					<Name>MAIN.sensorAvancado</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.sensorRecuado</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.posicao</Name>
+					<Type>LREAL</Type>
+				</Var>
+			</Vars>
+			<Vars VarGrpType="2" AreaNo="1">
+				<Name>PlcTask Outputs</Name>
+				<Var>
+					<Name>MAIN.avanca</Name>
+					<Type>BOOL</Type>
+				</Var>
+				<Var>
+					<Name>MAIN.recua</Name>
+					<Type>BOOL</Type>
+				</Var>
+			</Vars>
+			<UnrestoredVarLinks ImportTime="2023-07-27T14:51:09">
+				<OwnerA Name="OutputSrc" Prefix="TIPC^PLCMaquina^PLCMaquina Instance" Type="2">
+					<OwnerB Name="TIPC^RT1^RT1 Instance">
+						<Link VarA="MAIN.btRecua" TypeA="BOOL" InOutA="1" GuidA="{18071995-0000-0000-0000-000000000030}" VarB="PlcTask Inputs^MAIN.recua" RestoreInfo="ANotFound"/>
+					</OwnerB>
+				</OwnerA>
+			</UnrestoredVarLinks>
+			<Contexts>
+				<Context>
+					<Id>0</Id>
+					<Name>PlcTask</Name>
+					<ManualConfig>
+						<OTCID>#x02010040</OTCID>
+					</ManualConfig>
+					<Priority>21</Priority>
+					<CycleTime>10000000</CycleTime>
+				</Context>
+			</Contexts>
+			<TaskPouOids>
+				<TaskPouOid Prio="21" OTCID="#x08502041"/>
+			</TaskPouOids>
+		</Instance>
+	</Project>
+</TcSmItem>

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_CylinderSimul" Id="{86309f97-5da7-417a-87bb-acd077ebc977}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_CylinderSimul
+VAR_INPUT
+	moveFwd: BOOL;
+	moveBwd: BOOL;
+	course:LREAL:=500;	//cylinder course in mm
+	moveVel:LREAL:=100;	//move velocity in mm/s
+	cycleTime:TIME:=T#10MS;
+END_VAR
+VAR_OUTPUT
+	sensorCylFwd: BOOL;
+	sensorCylBwd: BOOL;
+	currentPos:LREAL;
+	posPercent:LREAL;
+END_VAR
+VAR
+	movementPerCycle: LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[movementPerCycle:= TIME_TO_LREAL(cycletime)/1000*moveVel;
+IF moveFwd AND NOT moveBwd THEN
+	m_CylFwd();
+ELSIF moveBwd AND NOT moveFwd THEN
+	m_CylBwd();
+END_IF
+
+sensorCylBwd:= currentPos <= 1;
+sensorCylFwd:= currentPos >= (course - 1);
+]]></ST>
+    </Implementation>
+    <Method Name="m_CylBwd" Id="{0b1130a6-bf15-4c43-ae1d-a2a64047ba68}">
+      <Declaration><![CDATA[METHOD m_CylBwd : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[currentPos:= LIMIT(0,currentPos-movementPerCycle,course);
+posPercent:= currentPos*100/course;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="m_CylFwd" Id="{e0b4e065-4744-4854-9424-04265b2c5d03}">
+      <Declaration><![CDATA[METHOD m_CylFwd : BOOL
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[currentPos:= LIMIT(0,currentPos+movementPerCycle,course);
+posPercent:= currentPos*100/course;]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_CylinderSimul">
+      <LineId Id="21" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="23" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="27" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="30" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_CylinderSimul.m_CylBwd">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_CylinderSimul.m_CylFwd">
+      <LineId Id="5" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
