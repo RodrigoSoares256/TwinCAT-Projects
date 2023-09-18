@@ -25,7 +25,10 @@ not provide it.
 
 **BasicUtils** => Functionalities to help with several situations
 
+
 **TempControlSample** => Sample use of the Temperature controller library
 * In this sample here we have a visualization which help us understand how to use the temperature controller library
 * It has been made so that one might be able to use it well for a heating application
 * Althought that are some of the parameters used in the cooling process it has not been tested for such use and must be adapted
+
+**SimulComponents** => Library that allows the user to simulate various components, such as cilinders, silos and so on
