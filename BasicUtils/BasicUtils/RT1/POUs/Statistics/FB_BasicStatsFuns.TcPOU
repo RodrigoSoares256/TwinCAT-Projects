@@ -1,0 +1,210 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BasicStatsFuns" Id="{3fa0b973-eb3e-4a78-90f3-2dea6596f72b}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BasicStatsFuns
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_Avg" Id="{f85c6aff-3924-4e01-bd06-569ad7d41f51}">
+      <Declaration><![CDATA[METHOD M_Avg : LREAL
+VAR_IN_OUT
+	a : ARRAY[*] OF LREAL;
+END_VAR
+
+VAR
+	upper: DINT;
+	lower: DINT;
+	sum:LREAL;
+	idx:DINT;
+	qtt: LREAL;
+	avg: LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[upper:=UPPER_BOUND(a,1);
+lower:=LOWER_BOUND(a,1);
+
+qtt:= DINT_TO_LREAL(upper-lower+1);
+
+sum:=0;
+FOR idx:=lower TO upper DO
+	sum:= sum + a[idx];
+END_FOR
+IF qtt <> 0 THEN
+	avg:= sum/qtt;
+END_IF
+M_Avg:=avg;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Max" Id="{307b30ef-7b30-4b7d-bb3c-b632073576a4}">
+      <Declaration><![CDATA[METHOD M_Max : LREAL
+VAR_IN_OUT
+	a:ARRAY[*] OF LREAL;
+END_VAR
+VAR
+	maximum:LREAL;
+	upper: DINT;
+	lower: DINT;
+	range: LREAL;
+	idx: DINT;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[upper:=UPPER_BOUND(a,1);
+lower:=LOWER_BOUND(a,1);
+
+range:= DINT_TO_LREAL(upper-lower+1);
+
+maximum:= a[lower];
+
+FOR idx:= lower TO upper DO
+	maximum:= MAX(maximum, a[idx]);
+END_FOR
+M_Max:= maximum;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Min" Id="{6aca99c8-5ac7-4861-9271-9fc7de40a6b5}">
+      <Declaration><![CDATA[METHOD M_Min : LREAL
+VAR_IN_OUT
+	a:ARRAY[*] OF LREAL;
+END_VAR
+VAR
+	minimum:LREAL;
+	upper: DINT;
+	lower: DINT;
+	range: LREAL;
+	idx: DINT;	
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[upper:=UPPER_BOUND(a,1);
+lower:=LOWER_BOUND(a,1);
+
+range:= DINT_TO_LREAL(upper-lower+1);
+
+minimum:= a[lower];
+
+FOR idx:= lower TO upper DO
+	minimum:= MIN(minimum, a[idx]);
+END_FOR
+M_Min:= minimum;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Range" Id="{5e15762d-8504-4b72-a79d-db2d965d9bc6}">
+      <Declaration><![CDATA[METHOD M_Range : LREAL
+VAR_IN_OUT
+	a:ARRAY[*] OF LREAL;
+END_VAR
+VAR
+	maximum, minimum, range:LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[maximum:= M_Max(a);
+minimum:= M_Min(a);
+
+range:= maximum-minimum;
+M_Range:= range;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Std" Id="{1871388c-8835-494c-aebb-c9b18b785abf}">
+      <Declaration><![CDATA[METHOD M_Std : LREAL
+VAR_IN_OUT
+	a : ARRAY[*] OF LREAL;
+END_VAR
+VAR
+	variance:LREAL;
+	std:LREAL;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[variance:= M_Variance(a);
+std:= SQRT(variance);
+M_Std:=std;
+]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_Variance" Id="{c42ba802-e19a-4b53-9b4b-20a0d220991a}">
+      <Declaration><![CDATA[METHOD M_Variance : LREAL
+VAR_IN_OUT
+	a : ARRAY[*] OF LREAL;
+END_VAR
+VAR
+	avg, qtt:lreal;
+	upper: DINT;
+	lower: DINT;
+	idx: DINT;
+	numerator:LREAL;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[upper:=UPPER_BOUND(a,1);
+lower:=LOWER_BOUND(a,1);
+
+qtt:= DINT_TO_LREAL(upper-lower+1);
+
+avg:=M_Avg(a);
+numerator:=0;
+
+FOR idx:= lower TO upper DO
+	numerator:= numerator+ EXPT(a[idx]-avg,2);
+END_FOR
+
+IF qtt <> 0 THEN
+	M_Variance:= numerator/qtt;
+END_IF]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_BasicStatsFuns">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Avg">
+      <LineId Id="40" Count="12" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Max">
+      <LineId Id="9" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="19" Count="1" />
+      <LineId Id="22" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Min">
+      <LineId Id="35" Count="10" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Range">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Std">
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="2" />
+    </LineIds>
+    <LineIds Name="FB_BasicStatsFuns.M_Variance">
+      <LineId Id="11" Count="2" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="17" Count="1" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="21" Count="1" />
+      <LineId Id="29" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="26" Count="0" />
+      <LineId Id="30" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

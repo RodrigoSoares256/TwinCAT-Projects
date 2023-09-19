@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="prgFilterTesting" Id="{5d27849a-8e5a-4570-8dfc-86c2ad1a825b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgFilterTesting
+VAR
+	t:LREAL;
+	squareSignal:LREAL;
+	valueAdd:LREAL:=0.01;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[t:= t+valueAdd;
+
+squareSignal:= SIN(t) + SIN(3*t)/3+ SIN(5*t)/5 + SIN(7*t)/7 + SIN(9*t)/9;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgFilterTesting">
+      <LineId Id="8" Count="1" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="11" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -13,12 +13,15 @@ END_VAR
     <Implementation>
       <ST><![CDATA[prgTrigTesting();
 prgTestAuxsFuns();
+prgTestStatistics();
+prgFilterTesting();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
       <LineId Id="2" Count="0" />
       <LineId Id="11" Count="0" />
       <LineId Id="20" Count="0" />
+      <LineId Id="29" Count="1" />
     </LineIds>
   </POU>
 </TcPlcObject>

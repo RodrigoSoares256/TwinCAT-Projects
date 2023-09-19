@@ -41,6 +41,15 @@
     <Compile Include="POUs\CO_Ntrollers\PIController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Filters\FB_AvgFilter.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Filters\FB_SignalGen.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Filters\prgFilterTesting.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\MAIN.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -60,9 +69,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Math\DerivativeFiltered_2.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\Math\FB_AvgFilter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Math\FB_CalcKeyPoints.TcPOU">
@@ -116,16 +122,22 @@
     <Compile Include="POUs\SpecialTriggers\FB_ChangeTrig.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\SpecialTriggers\FB_Int_Trig.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\SpecialTriggers\FB_Int_TrigFall.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\SpecialTriggers\FB_Int_TrigRise.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\SpecialTriggers\prgTrigTesting.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\SpecialTrigs\FB_Int_Trig.TcPOU">
+    <Compile Include="POUs\Statistics\FB_BasicStatsFuns.TcPOU">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="POUs\SpecialTrigs\FB_Int_TrigFall.TcPOU">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="POUs\SpecialTrigs\FB_Int_TrigRise.TcPOU">
+    <Compile Include="POUs\Statistics\prgTestStatistics.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Visualization Manager.TcVMO">
@@ -142,7 +154,8 @@
     <Folder Include="POUs\CO_Ntrollers" />
     <Folder Include="POUs\Math" />
     <Folder Include="POUs\AuxFuns" />
-    <Folder Include="POUs\SpecialTrigs" />
+    <Folder Include="POUs\Filters" />
+    <Folder Include="POUs\Statistics" />
     <Folder Include="POUs\OrderAlgorithms" />
     <Folder Include="POUs\SpecialTriggers" />
     <Folder Include="VISUs" />

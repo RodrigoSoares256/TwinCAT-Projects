@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="prgTestStatistics" Id="{406d69a2-6a89-4950-9b4e-88b0bafeda65}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgTestStatistics
+VAR
+	statistics:FB_BasicStatsFuns;
+	aStats: ARRAY [1..7] OF LREAL := [15, 12, 11, 7, -5, 33, 45];
+	avg: LREAL;
+	maxi: LREAL;
+	mini: LREAL;
+	range: LREAL;
+	variance: LREAL;
+	std:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[avg:= statistics.M_Avg(aStats);
+
+maxi:=statistics.M_Max(aStats);
+
+mini:= statistics.M_Min(aStats);
+
+range:= statistics.M_Range(aStats);
+
+variance:=statistics.M_Variance(aStats);
+
+std:= statistics.M_Std(aStats);
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgTestStatistics">
+      <LineId Id="5" Count="0" />
+      <LineId Id="11" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="25" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="17" Count="0" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="20" Count="0" />
+      <LineId Id="24" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
