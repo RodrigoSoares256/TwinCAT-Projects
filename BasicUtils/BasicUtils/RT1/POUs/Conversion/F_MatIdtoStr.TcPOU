@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_MatIdtoStr" Id="{4576843d-0448-477f-9ee4-6a8dac73dcc5}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_MatIdtoStr : STRING(20)
+VAR_INPUT
+	materialId:DINT;
+END_VAR
+VAR
+	i:UINT;
+	s1: STRING;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i :=1 TO GVLConst.uiLastMaterialPossible DO
+	IF G_DBConn.aMaterialAvailable[i].ID = materialId AND materialId <> 0 THEN
+		s1:=G_Dbconn.aMaterialAvailable[i].matId;
+		EXIT;
+	ELSIF materialId =  0 THEN
+		s1:='';
+		EXIT;
+	END_IF
+END_FOR
+F_MatIdtoStr:=s1;
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_MatIdtoStr">
+      <LineId Id="3" Count="9" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

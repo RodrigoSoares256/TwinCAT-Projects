@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_DtToSqlTime2" Id="{97865ea2-d790-4f1e-9d77-b038cf0746d8}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DtToSqlTime2 : STRING
+VAR_INPUT
+	dtIn:TIMESTRUCT;
+END_VAR
+VAR
+	s1:STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[s1:= WORD_TO_STRING(dtIn.wYear);
+//s1:=CONCAT(S1,'-');
+IF dtIn.wMonth<10 THEN
+	S1:=CONCAT(S1,'0');
+	S1:=CONCAT(S1,WORD_TO_STRING(dtIn.wMonth));
+ELSE
+	S1:=CONCAT(S1,WORD_TO_STRING(dtIn.wMonth));
+END_IF
+//s1:=CONCAT(s1,'-');
+IF dtIn.wDay<10 THEN
+	S1:=CONCAT(S1,'0');
+	s1:=CONCAT(S1,WORD_TO_STRING(dtIn.wDay));
+ELSE
+	s1:=CONCAT(S1,WORD_TO_STRING(dtIn.wDay));
+END_IF
+s1:=CONCAT(s1,' ');
+s1:=CONCAT(s1,WORD_TO_STRING(dtIN.wHour));
+s1:=CONCAT(S1,':');
+S1:=CONCAT(s1,WORD_TO_STRING(dtIN.wMinute));
+s1:=CONCAT(s1,':');
+s1:=CONCAT(s1,WORD_TO_STRING(dtIN.wSecond));
+
+F_DtToSqlTime2:=S1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_DtToSqlTime2">
+      <LineId Id="3" Count="21" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -38,6 +38,24 @@
     <Compile Include="POUs\AuxFuns\prgTestAuxsFuns.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Conversion\F_DtToSqlTime.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Conversion\F_DtToSqlTime2.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Conversion\F_DtToStr.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Conversion\F_LrealToExcel.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Conversion\F_MatIdtoStr.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Conversion\F_TimeStToFileStr.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\CO_Ntrollers\PIController.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -151,6 +169,7 @@
   <ItemGroup>
     <Folder Include="DUTs" />
     <Folder Include="GVLs" />
+    <Folder Include="POUs\Conversion" />
     <Folder Include="POUs\CO_Ntrollers" />
     <Folder Include="POUs\Math" />
     <Folder Include="POUs\AuxFuns" />

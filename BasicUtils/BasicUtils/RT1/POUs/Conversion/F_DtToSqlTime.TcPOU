@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_DtToSqlTime" Id="{c84f2a71-a526-4dd1-a185-32578f9fc50d}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DtToSqlTime : STRING
+VAR_INPUT
+	dtIn:TIMESTRUCT;
+END_VAR
+VAR
+	s1:STRING;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[s1:= WORD_TO_STRING(dtIn.wYear);
+s1:=CONCAT(S1,'-');
+S1:=CONCAT(S1,WORD_TO_STRING(dtIn.wMonth));
+s1:=CONCAT(s1,'-');
+s1:=CONCAT(S1,WORD_TO_STRING(dtIn.wDay));
+s1:=CONCAT(s1,' ');
+s1:=CONCAT(s1,WORD_TO_STRING(dtIN.wHour));
+s1:=CONCAT(S1,':');
+S1:=CONCAT(s1,WORD_TO_STRING(dtIN.wMinute));
+s1:=CONCAT(s1,':');
+s1:=CONCAT(s1,WORD_TO_STRING(dtIN.wSecond));
+
+F_DtToSqlTime:=S1;
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_DtToSqlTime">
+      <LineId Id="7" Count="0" />
+      <LineId Id="19" Count="9" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="10" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_LrealToExcel" Id="{389078ac-b774-4274-8295-dbdfd6d59871}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_LrealToExcel : STRING
+VAR_INPUT
+	bUseComma: BOOL;
+	r1:LREAL;
+END_VAR
+VAR
+	s1:STRING;
+	pos: INT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//in portuguese Excel should have a comma instead of a dot
+s1:=LREAL_TO_STRING(r1);
+IF bUseComma THEN
+	pos:= find(s1,'.');
+	IF pos <> 0 THEN
+		s1:=replace(s1,',',1,pos);
+	END_IF	
+END_IF
+
+F_LrealToExcel:=s1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_LrealToExcel">
+      <LineId Id="3" Count="8" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

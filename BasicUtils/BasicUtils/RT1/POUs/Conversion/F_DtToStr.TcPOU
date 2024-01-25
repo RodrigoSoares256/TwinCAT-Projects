@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_DtToStr" Id="{6a3744f8-8c7f-4ca4-a2e7-9f6537e85219}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_DtToStr : STRING
+VAR_INPUT
+	dt1:DT;
+END_VAR
+VAR
+	s1:STRING;
+	t1:TIMESTRUCT;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[t1:=DT_TO_SYSTEMTIME(dt1);
+s1:=WORD_TO_STRING(t1.wDay);
+s1:= CONCAT(S1,'/');
+S1:=CONCAT(s1,WORD_TO_STRING(t1.wMonth));
+s1:=CONCAT(s1,'/');
+s1:=CONCAT(s1,WORD_TO_STRING(t1.wYear));
+s1:=CONCAT(s1,' ');
+s1:=CONCAT(s1,WORD_TO_STRING(t1.wHour));
+s1:=CONCAT(s1,':');
+s1:=CONCAT(s1,WORD_TO_STRING(t1.wMinute));
+s1:=CONCAT(s1,':');
+s1:=CONCAT(s1, WORD_TO_STRING(t1.wSecond));
+F_DtToStr:=s1;
+]]></ST>
+    </Implementation>
+    <LineIds Name="F_DtToStr">
+      <LineId Id="3" Count="12" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

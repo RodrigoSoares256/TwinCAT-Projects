@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="F_TimeStToFileStr" Id="{99713a09-b995-4949-be67-c869804266f1}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION F_TimeStToFileStr : STRING
+VAR_INPUT
+	timeToConvert:TIMESTRUCT;
+END_VAR
+VAR
+	s1:STRING;
+END_VAR
+//Converts a timestruct variable to a string that can be used as file name]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[s1:=WORD_TO_STRING(timeToConvert.wYear);
+s1:=CONCAT(s1,WORD_TO_STRING(timeToConvert.wMonth));
+s1:=CONCAT(s1,WORD_TO_STRING(timeToConvert.wDay));
+s1:=CONCAT(s1,'_');
+s1:=CONCAT(s1,WORD_TO_STRING(timeToConvert.wHour));
+s1:=CONCAT(s1,'_');
+s1:=CONCAT(s1,WORD_TO_STRING(timeToConvert.wMinute));
+s1:=CONCAT(s1,'_');
+s1:=CONCAT(s1,WORD_TO_STRING(timeToConvert.wSecond));
+
+F_TimeStToFileStr:=s1;]]></ST>
+    </Implementation>
+    <LineIds Name="F_TimeStToFileStr">
+      <LineId Id="7" Count="0" />
+      <LineId Id="10" Count="0" />
+      <LineId Id="12" Count="2" />
+      <LineId Id="18" Count="0" />
+      <LineId Id="15" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="28" Count="0" />
+      <LineId Id="27" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
