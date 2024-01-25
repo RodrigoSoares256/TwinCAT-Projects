@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <Itf Name="I_FBDiag" Id="{04f94619-e2a7-46c6-ac37-08520c68d83a}">
+    <Declaration><![CDATA[INTERFACE I_FBDiag
+]]></Declaration>
+    <Property Name="P_diagBits" Id="{becec5d2-04e3-4f2a-a307-040fc135c7b9}">
+      <Declaration><![CDATA[PROPERTY P_diagBits : st_diagFBBits]]></Declaration>
+      <Get Name="Get" Id="{d92f5385-dabc-4135-a091-f06766c729a3}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+    <Property Name="P_State" Id="{fbb64f56-6859-4630-978d-ec6ce0932419}">
+      <Declaration><![CDATA[PROPERTY P_State : STRING(20)]]></Declaration>
+      <Get Name="Get" Id="{4ff4aeb3-fd3f-4d7a-821d-c92ea22ee184}">
+        <Declaration><![CDATA[]]></Declaration>
+      </Get>
+    </Property>
+  </Itf>
+</TcPlcObject>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ConnectionDiag" Id="{22182ff6-c842-4489-92b3-7a3171aee104}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ConnectionDiag
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	connInfo AT %I*:st_ConnectionInfoData;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Method Name="M_ConnInfoDiag" Id="{56b0996c-7eb7-4beb-9223-391f238db29e}">
+      <Declaration><![CDATA[METHOD M_ConnInfoDiag : E_connInfoDiag
+VAR_INPUT
+END_VAR
+VAR 
+	infoDiag:E_connInfoDiag;
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE connInfo.diag OF
+	1:infoDiag:=E_connInfoDiag.invalidCommand;
+	2:infoDiag:=E_connInfoDiag.unknownCommand;
+	3:infoDiag:=E_connInfoDiag.invalidConnectionId;
+	4:infoDiag:=E_connInfoDiag.invalidCRC;
+	5:infoDiag:=E_connInfoDiag.watchdogTime;
+	6:infoDiag:=E_connInfoDiag.invalidFSOEAddr;
+	7:infoDiag:=E_connInfoDiag.invalidData;
+	8:infoDiag:=E_connInfoDiag.invalidCommParaLen;
+	9:infoDiag:=E_connInfoDiag.invalidCommPara;
+	10:infoDiag:=E_connInfoDiag.invalidUserParaLen;
+	11:infoDiag:=E_connInfoDiag.invalidUserPara;
+	12:infoDiag:=E_connInfoDiag.FSOEMasterReset;
+	13:infoDiag:=E_connInfoDiag.moduleErrOnSlave;
+	14:infoDiag:=E_connInfoDiag.moduleErrEl290x;
+	15:infoDiag:=E_connInfoDiag.slaveNotStarted;
+	16:infoDiag:=E_connInfoDiag.FSOESlaveErr;
+	32:infoDiag:=E_connInfoDiag.FSOESlaveFailsafeActive;
+	64:infoDiag:=E_connInfoDiag.startup;
+	128:infoDiag:=E_connInfoDiag.FSOEMasterFailsafeActive;
+END_CASE
+M_ConnInfoDiag:=infoDiag;]]></ST>
+      </Implementation>
+    </Method>
+    <Method Name="M_ConnInfoState" Id="{522628df-77aa-4ff0-bffe-6f9a98962be3}">
+      <Declaration><![CDATA[METHOD M_ConnInfoState : STRING(20)
+VAR_INPUT
+END_VAR
+VAR
+	s1:STRING(20);
+END_VAR]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[CASE connInfo.state OF
+	100:s1:='Reset State';
+	101:s1:='Session State';
+	102:s1:='Connection State';
+	103:s1:='Parameter State';
+	104:s1:='Data State';
+	105:s1:='Shutdown State';
+	106:s1:='Shutdown-Deactivate';
+END_CASE
+M_ConnInfoState:=s1;
+]]></ST>
+      </Implementation>
+    </Method>
+    <LineIds Name="FB_ConnectionDiag">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ConnectionDiag.M_ConnInfoDiag">
+      <LineId Id="5" Count="1" />
+      <LineId Id="8" Count="17" />
+      <LineId Id="7" Count="0" />
+      <LineId Id="28" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ConnectionDiag.M_ConnInfoState">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="10" Count="5" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="16" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

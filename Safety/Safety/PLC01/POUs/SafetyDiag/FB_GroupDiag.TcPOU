@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_GroupDiag" Id="{18361043-3422-483d-91d7-13f5e4aacadb}" SpecialFunc="None">
+    <Declaration><![CDATA[{attribute 'reflection'} 
+FUNCTION_BLOCK FB_GroupDiag
+VAR_INPUT
+	logGroupErrorState:BOOL:=TRUE;
+END_VAR
+VAR
+    {attribute 'instance-path'}
+    {attribute 'noinit'}
+	sPath:STRING;	
+	groupInfoData AT %I*:st_InfoDataGroup;
+	oldGroupState:USINT;
+	sCurrDiag:STRING(20);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="diagInfo" Id="{65958fc7-e1c3-40b4-a045-abce81395cdc}">
+      <Declaration><![CDATA[PROPERTY diagInfo : string(20)]]></Declaration>
+      <Get Name="Get" Id="{722d1437-c39a-4ffc-b826-b881913b8963}">
+        <Declaration><![CDATA[VAR
+	s1:STRING(20);
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CASE groupInfoData.diag OF
+	0:s1:='';
+	1:s1:='FBERROR';
+	2:s1:='COMERROR';
+	3:s1:='MODULEERROR';
+	4:s1:='CMPERROR';
+	5:s1:='DEACTIVATEERROR';
+	6:s1:='RESTARTERROR';
+END_CASE
+diagInfo:=sCurrDiag:=s1;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Method Name="M_GroupErrorLog" Id="{33c2e4d1-50b2-42bf-aa8e-14ee5e812d98}">
+      <Declaration><![CDATA[METHOD PRIVATE M_GroupErrorLog : BOOL
+VAR_INPUT
+	groupName:STRING;
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[ADSLOGSTR(ADSLOG_MSGTYPE_ERROR OR ADSLOG_MSGTYPE_STRING,'Erro no grupo e diagnótico = %s' ,concat(groupName,concat(' , ',diagInfo)));
+
+]]></ST>
+      </Implementation>
+    </Method>
+    <Property Name="stateInfo" Id="{aa435c72-ab30-4e94-8d73-017cf2fd44a9}">
+      <Declaration><![CDATA[PROPERTY stateInfo : string(20)]]></Declaration>
+      <Get Name="Get" Id="{2775a69f-6a1b-4f48-9b18-8a1b60144f56}">
+        <Declaration><![CDATA[VAR
+	s1:STRING(20);
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CASE groupInfoData.state OF
+	1:s1:='RUN';
+	2:s1:='STOP';
+	4:s1:='ERROR';
+		IF oldGroupState <> groupInfoData.state AND logGroupErrorState THEN
+			M_GroupErrorLog(sPath);
+		END_IF
+	5:s1:='RESET';
+	6:s1:='START';
+	7:s1:='STOPERROR';
+	16:s1:='DEACTIVATE';
+	17:s1:='WAITCOMMERROR';
+END_CASE
+stateInfo:= s1;
+
+oldGroupState:=groupInfoData.state;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_GroupDiag">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GroupDiag.diagInfo.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="5" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="14" Count="1" />
+    </LineIds>
+    <LineIds Name="FB_GroupDiag.M_GroupErrorLog">
+      <LineId Id="5" Count="0" />
+      <LineId Id="8" Count="0" />
+      <LineId Id="7" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_GroupDiag.stateInfo.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="7" Count="1" />
+      <LineId Id="23" Count="1" />
+      <LineId Id="22" Count="0" />
+      <LineId Id="9" Count="4" />
+      <LineId Id="6" Count="0" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="21" Count="0" />
+      <LineId Id="17" Count="1" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

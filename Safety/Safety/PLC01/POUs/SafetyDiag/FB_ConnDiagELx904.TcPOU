@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_ConnDiagELx904" Id="{2a888b33-0b07-4358-a761-c1d242b81a76}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_ConnDiagELx904 EXTENDS FB_ConnectionDiag
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="InputState" Id="{61129c85-c463-4900-812e-ef1b66f53077}">
+      <Declaration><![CDATA[PROPERTY InputState : ARRAY[0..3] OF BOOL]]></Declaration>
+      <Get Name="Get" Id="{bafc66e4-a537-43f1-9dab-43cb37214e4b}">
+        <Declaration><![CDATA[VAR
+	bits:ARRAY[0..3] OF BOOL;
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[bits[0]:= SUPER^.connInfo.bit1;
+bits[1]:= SUPER^.connInfo.bit2;
+bits[2]:= SUPER^.connInfo.bit3;
+bits[3]:= SUPER^.connInfo.bit4;
+InputState:=bits;
+]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_ConnDiagELx904">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_ConnDiagELx904.InputState.Get">
+      <LineId Id="2" Count="0" />
+      <LineId Id="6" Count="4" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

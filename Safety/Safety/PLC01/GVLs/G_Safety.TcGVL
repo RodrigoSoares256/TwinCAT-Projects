@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <GVL Name="G_Safety" Id="{d8cae600-c8bb-4035-94e3-bc41bdc713d7}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	runSafety AT %Q*:BOOL;	//ativação do safety
+	resetSafety AT %Q*:BOOL;//reset do safety
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

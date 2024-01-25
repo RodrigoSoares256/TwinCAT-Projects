@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="st_diagFBBits" Id="{51771b6c-fb7a-440c-9cab-f62079bacb1f}">
+    <Declaration><![CDATA[TYPE st_diagFBBits :ARRAY[0..15] OF BOOL;
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

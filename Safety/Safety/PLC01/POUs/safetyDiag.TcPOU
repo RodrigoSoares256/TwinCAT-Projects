@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="safetyDiag" Id="{cca12df0-3395-481b-a9f3-74ec709285d8}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM safetyDiag
+VAR
+	fbDiag:I_FBDiag;
+	blocoEStop:FB_EStopDiag;
+	sEStopState: STRING(15);
+	eStopDiagBits:st_diagFBBits;
+	{region "Connection"}
+	connDiagEL1904:FB_ConnDiagELx904;
+	connDiagEL2904:FB_ConnDiagELx904;
+	stateEL1904, stateEL2904:STRING(20);
+	diagEL1904,diagEL2904:E_connInfoDiag;
+	el1904Bits,el2904Bits:ARRAY[0..3] OF BOOL;
+	{endregion}
+	{region "GroupDiag"}
+	eStopGroup:FB_GroupDiag;
+	{endregion}
+	groupState: STRING(20);
+	sGroupDiagInfo: STRING(20);
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbDiag:=blocoEStop;
+sEStopState:=fbDiag.P_State;
+eStopDiagBits:=fbDiag.P_diagBits;
+
+
+//Connection
+
+stateEL1904:=connDiagEL1904.M_ConnInfoState();
+stateEL2904:=connDiagEL2904.M_ConnInfoState();
+diagEL1904:=connDiagEL1904.M_ConnInfoDiag();
+diagEL2904:=connDiagEL2904.M_ConnInfoDiag();
+el1904Bits:=connDiagEL1904.InputState;
+el2904Bits:=connDiagEL2904.InputState;
+
+//group
+eStopGroup.logGroupErrorState:=TRUE;
+
+groupState:=eStopGroup.stateInfo;
+sGroupDiagInfo:=eStopGroup.diagInfo;
+
+]]></ST>
+    </Implementation>
+    <LineIds Name="safetyDiag">
+      <LineId Id="96" Count="12" />
+      <LineId Id="113" Count="0" />
+      <LineId Id="112" Count="0" />
+      <LineId Id="114" Count="0" />
+      <LineId Id="109" Count="2" />
+      <LineId Id="118" Count="0" />
+      <LineId Id="117" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

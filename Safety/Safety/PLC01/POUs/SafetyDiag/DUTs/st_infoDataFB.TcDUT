@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <DUT Name="st_infoDataFB" Id="{e4203cbb-f0dc-4603-86ed-64ca24bb2338}">
+    <Declaration><![CDATA[TYPE st_infoDataFB :
+STRUCT
+	state:USINT;
+	diag:UINT;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

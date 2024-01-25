@@ -32,3 +32,11 @@ not provide it.
 * Althought that are some of the parameters used in the cooling process it has not been tested for such use and must be adapted
 
 **SimulComponents** => Library that allows the user to simulate various components, such as cilinders, silos and so on
+
+**Safety** => Set of libraries that help you diagnose safety FBs, groups and connections
+* Just map state, diag, input and output to the PLC and use these function blocks to 
+* Help diagnose your safety application.
+* **Attention** This project is not intended to be used in any particular safety related application
+it's basically just a sample
+* At the moment only E-Stop function block diagnose is implemented, however other function
+blocks can be easily inserted.

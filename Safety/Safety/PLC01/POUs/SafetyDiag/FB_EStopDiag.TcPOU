@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_EStopDiag" Id="{a537d6ed-09b6-4831-9eb3-db8101a58e45}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EStopDiag IMPLEMENTS I_FBDiag
+VAR_INPUT
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	fbInfoData AT %I*:st_infoDataFB;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[]]></ST>
+    </Implementation>
+    <Property Name="P_diagBits" Id="{8816fcf6-6866-414b-989a-a11b6ad1ca89}">
+      <Declaration><![CDATA[PROPERTY P_diagBits : st_diagFBBits
+]]></Declaration>
+      <Get Name="Get" Id="{f76d53a2-7870-4051-bbf3-04b0e00437dc}">
+        <Declaration><![CDATA[VAR
+	diagBits:st_diagFBBits;	
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[diagBits[0]:=fbInfoData.diag.0;
+diagBits[1]:=fbInfoData.diag.1;
+diagBits[2]:=fbInfoData.diag.2;
+diagBits[3]:=fbInfoData.diag.3;
+diagBits[4]:=fbInfoData.diag.4;
+diagBits[5]:=fbInfoData.diag.5;
+diagBits[6]:=fbInfoData.diag.6;
+diagBits[7]:=fbInfoData.diag.7;
+diagBits[8]:=fbInfoData.diag.8;
+diagBits[9]:=fbInfoData.diag.9;
+diagBits[10]:=fbInfoData.diag.10;
+diagBits[11]:=fbInfoData.diag.11;
+diagBits[12]:=fbInfoData.diag.12;
+diagBits[13]:=fbInfoData.diag.13;
+diagBits[14]:=fbInfoData.diag.14;
+diagBits[15]:=fbInfoData.diag.15;
+
+P_diagBits:= diagBits;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <Property Name="P_State" Id="{5a3b5c62-7278-4d4a-b577-726c4c5eee51}">
+      <Declaration><![CDATA[PROPERTY P_State : STRING(20)
+]]></Declaration>
+      <Get Name="Get" Id="{72d5ef7e-63e4-4caf-94f3-b4f0dfea5b94}">
+        <Declaration><![CDATA[VAR
+	state:STRING(20);
+END_VAR
+]]></Declaration>
+        <Implementation>
+          <ST><![CDATA[CASE fbInfoData.state OF
+	0:state:='undefined';
+	1:state:='RUN';
+	2:state:='STOP';
+	3:state:='SAFE';
+	4:state:='ERROR';
+	5:state:='RESET';
+	6:state:='START';
+	8:state:='DELAYOUT';
+ELSE
+	state:='Error';	
+END_CASE
+P_State:= state;]]></ST>
+        </Implementation>
+      </Get>
+    </Property>
+    <LineIds Name="FB_EStopDiag">
+      <LineId Id="9" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EStopDiag.P_diagBits.Get">
+      <LineId Id="6" Count="16" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+    <LineIds Name="FB_EStopDiag.P_State.Get">
+      <LineId Id="6" Count="11" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
