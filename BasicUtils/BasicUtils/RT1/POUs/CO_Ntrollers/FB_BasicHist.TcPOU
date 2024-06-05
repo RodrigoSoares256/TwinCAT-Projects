@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_BasicHist" Id="{5a3badcb-16d2-4bce-a590-a61c589d507a}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_BasicHist
+VAR_INPUT
+	fHisteresis,fDesiredValue,fActualValue:LREAL;
+END_VAR
+VAR_OUTPUT
+	output,error:BOOL;
+END_VAR
+VAR
+	maximum: LREAL;
+	minimum: LREAL;
+	trigMaxReached, trigMinReached:R_TRIG;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF fHisteresis>0 THEN
+	error:=FALSE;
+	//
+	maximum:=fDesiredValue + fHisteresis/2;
+	minimum:= fDesiredValue-fHisteresis/2;
+	trigMaxReached(CLK:=fActualValue>maximum);
+	trigMinReached(CLK:= fActualValue<minimum);
+	IF trigMaxReached.Q THEN
+		output:=TRUE;
+	END_IF
+	IF trigMinReached.Q THEN
+		output:=FALSE;
+	END_IF
+ELSE
+	output:=FALSE;
+	error:=TRUE;	
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_BasicHist">
+      <LineId Id="3" Count="15" />
+      <LineId Id="2" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>
