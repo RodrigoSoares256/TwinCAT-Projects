@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="FB_TimeBasedIntegrator" Id="{b809bf77-0074-44c0-a221-7968b0e1dd12}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_TimeBasedIntegrator
+VAR_INPUT
+	tBaseTime:TIME:=T#1S;
+	rIn:LREAL;
+	addNegativeValues:BOOL;
+END_VAR
+VAR_OUTPUT
+	bErr: BOOL;
+END_VAR
+VAR
+	t1:TON;
+END_VAR
+VAR_IN_OUT
+	rAccumulator:LREAL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF tBaseTime = T#0S THEN
+	RETURN;
+END_IF
+
+t1(IN:= NOT t1.Q, PT:= tBaseTime);
+
+IF t1.Q AND addNegativeValues THEN
+	rAccumulator:=rAccumulator+rIn;
+ELSIF t1.Q AND NOT addNegativeValues THEN
+	rAccumulator := SEL(rIn >0, rAccumulator, rAccumulator+rIn);
+END_IF]]></ST>
+    </Implementation>
+    <LineIds Name="FB_TimeBasedIntegrator">
+      <LineId Id="18" Count="0" />
+      <LineId Id="20" Count="1" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="9" Count="0" />
+      <LineId Id="13" Count="0" />
+      <LineId Id="12" Count="0" />
+      <LineId Id="14" Count="0" />
+      <LineId Id="26" Count="1" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

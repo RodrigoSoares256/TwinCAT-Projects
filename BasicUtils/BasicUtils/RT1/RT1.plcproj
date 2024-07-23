@@ -104,6 +104,9 @@
     <Compile Include="POUs\Math\FB_RMSCalc.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Math\FB_TimeBasedIntegrator.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="POUs\Math\FB_TimeCounter.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -119,6 +122,10 @@
     <Compile Include="POUs\Math\F_SimpleDeadBand.TcPOU">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="POUs\Math\GVL_Math.TcGVL">
+      <SubType>Code</SubType>
+      <LinkAlways>true</LinkAlways>
+    </Compile>
     <Compile Include="POUs\Math\Integral.TcPOU">
       <SubType>Code</SubType>
     </Compile>
@@ -126,6 +133,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Math\LinTrafoLimitLess.TcPOU">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="POUs\Math\prgMathTesting.TcPOU">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="POUs\Math\SawTooth.TcPOU">
@@ -164,6 +174,14 @@
     <Compile Include="Visualization Manager.TcVMO">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="VISUs\AuxScreens\Footer.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
+    <Compile Include="VISUs\Math.TcVIS">
+      <SubType>Code</SubType>
+      <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
+    </Compile>
     <Compile Include="VISUs\Visualization.TcVIS">
       <SubType>Code</SubType>
       <DependentUpon>Visualization Manager.TcVMO</DependentUpon>
@@ -182,6 +200,7 @@
     <Folder Include="POUs\SpecialTriggers" />
     <Folder Include="VISUs" />
     <Folder Include="POUs" />
+    <Folder Include="VISUs\AuxScreens" />
   </ItemGroup>
   <ItemGroup>
     <PlaceholderReference Include="System_VisuElemMeter">
@@ -226,6 +245,10 @@
       <SystemLibrary>true</SystemLibrary>
       <ResolverGuid>2717eb6a-dd07-4c66-8d8d-cacebd7b18ae</ResolverGuid>
     </PlaceholderReference>
+    <PlaceholderReference Include="Tc2_ControllerToolbox">
+      <DefaultResolution>Tc2_ControllerToolbox, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_ControllerToolbox</Namespace>
+    </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Standard">
       <DefaultResolution>Tc2_Standard, * (Beckhoff Automation GmbH)</DefaultResolution>
       <Namespace>Tc2_Standard</Namespace>
@@ -236,6 +259,7 @@
     </PlaceholderReference>
     <PlaceholderReference Include="Tc2_Utilities">
       <DefaultResolution>Tc2_Utilities, * (Beckhoff Automation GmbH)</DefaultResolution>
+      <Namespace>Tc2_Utilities</Namespace>
     </PlaceholderReference>
     <PlaceholderReference Include="Tc3_Module">
       <DefaultResolution>Tc3_Module, * (Beckhoff Automation GmbH)</DefaultResolution>

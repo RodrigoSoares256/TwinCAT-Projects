@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="prgMathTesting" Id="{d9888b1e-75bb-4e7f-97be-34b919d569a6}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgMathTesting
+VAR
+	noise:FB_CTRL_NOISE_GENERATOR;
+	mode: E_CTRL_MODE := E_CTRL_MODE.eCTRL_MODE_ACTIVE;
+	paramNoise: ST_CTRL_NOISE_GENERATOR_PARAMS := (tCtrlCycleTime := TIME#10MS, tTaskCycleTime := TIME#10MS, fAmplitude := 5);
+	integrator:FB_TimeBasedIntegrator;
+	addNegative: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[noise(
+	fManSyncValue:= , 
+	eMode:= mode, 
+	fOut=> , 
+	eState=> , 
+	eErrorId=> , 
+	bError=> , 
+	stParams:= paramNoise);
+
+integrator(
+	tBaseTime:= T#1S, 
+	rIn:= noise.fOut, 
+	addNegativeValues:= addNegative, 
+	bErr=> , 
+	rAccumulator:= GVL_math.rIntegratorResult);
+]]></ST>
+    </Implementation>
+    <LineIds Name="prgMathTesting">
+      <LineId Id="7" Count="6" />
+      <LineId Id="5" Count="0" />
+      <LineId Id="19" Count="0" />
+      <LineId Id="22" Count="4" />
+      <LineId Id="16" Count="0" />
+      <LineId Id="15" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

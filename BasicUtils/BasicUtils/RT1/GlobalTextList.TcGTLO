@@ -16,6 +16,16 @@
               <l n="LanguageTexts" t="ArrayList" />
             </o>
             <o>
+              <v n="TextID">"145"</v>
+              <v n="TextDefault">"MAIN"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
+              <v n="TextID">"460"</v>
+              <v n="TextDefault">"MATH"</v>
+              <l n="LanguageTexts" t="ArrayList" />
+            </o>
+            <o>
               <v n="TextID">"96"</v>
               <v n="TextDefault">"Off"</v>
               <l n="LanguageTexts" t="ArrayList" />

@@ -15,6 +15,7 @@ END_VAR
 prgTestAuxsFuns();
 prgTestStatistics();
 prgFilterTesting();
+prgMathTesting();
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
@@ -22,6 +23,7 @@ prgFilterTesting();
       <LineId Id="11" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="29" Count="1" />
+      <LineId Id="39" Count="0" />
     </LineIds>
   </POU>
 </TcPlcObject>
