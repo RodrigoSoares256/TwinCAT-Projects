@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <POU Name="prgFileWrite" Id="{514476af-0f26-4216-b389-37580d2e3260}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgFileWrite
+VAR
+
+	step: INT;
+	bBusy: BOOL;
+	bErr: BOOL;
+	sErr: STRING;
+	hFile: UINT;
+	nRow: UDINT;
+	nColumm: UDINT;
+	
+	fbFileOpen	: FB_FileOpen;(* Opens file *)
+	fbFileClose	: FB_FileClose;(* Closes file *)
+	fbFileWrite	: FB_FileWrite;(* Reads binary data *)
+	fbWriter	: FB_CSVMemBufferWriter;(* Helper function block used to create CSV data bytes *)
+	
+
+	cbRecord:UDINT:=0;
+	cbField: UDINT;
+	field: ARRAY[0..GVL.MAX_CSV_FIELD_LENGTH] OF BYTE;
+	record: ARRAY[0..1024] OF BYTE;
+	iCycleCount: UDINT;
+	iNumVezes:INT:=60;
+	iVezAtual:INT;	
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[CASE step OF 
+	0:
+		IF GVL.recordFileNow THEN
+			GVL.recordFileNow:=FALSE;
+			bBusy:=TRUE;
+			bErr:=FALSE;
+			sErr:='';
+			hFile:=0;
+			nRow:=nColumm:=1;
+			iCycleCount:=0;
+			step:=10;
+		END_IF
+	10:
+		//Nesse passo abrimos o arquivo em modo binário
+		fbFileOpen(bExecute:= FALSE);
+		fbFileOpen(sNetId:='' , sPathName:=GVL.sFileName , nMode:= FOPEN_MODEAPPEND OR FOPEN_MODEBINARY
+			, ePath:= PATH_GENERIC, bExecute:= TRUE);
+		step:=20;
+	20:
+		fbFileOpen(bExecute:=FALSE ,hFile=> hFile);
+		IF NOT fbFileOpen.bBusy THEN
+			IF NOT fbFileOpen.bError THEN
+				step:=30;
+			ELSE
+				step:=100;
+				sErr:='Error opening file';
+				bErr:=TRUE;
+			END_IF
+		END_IF
+	30:
+		cbRecord:=0;
+		fbWriter.eCmd:= eEnumCmd_First;
+		IF nRow <=GVL.MAX_CSV_ROWS AND GVL.data[nRow].field01 <> '' THEN
+			FOR nColumm:=1 TO GVL.MAX_CSV_COLUMNS BY 1 DO
+				cbField:=0;
+				CASE nColumm OF
+					1:
+						cbField:=ARG_TO_CSVFIELD(F_STRING(GVL.data[nRow].field01),TRUE,ADR(field),SIZEOF(field));
+					2:
+						cbField:=ARG_TO_CSVFIELD(F_STRING(GVL.data[nRow].field02),TRUE,ADR(field),SIZEOF(field));
+					3:
+						cbField:=ARG_TO_CSVFIELD(F_STRING(GVL.data[nRow].field03),TRUE,ADR(field),SIZEOF(field));
+					4:
+						cbField:=ARG_TO_CSVFIELD(F_STRING(GVL.data[nRow].field04),TRUE,ADR(field),SIZEOF(field));
+					5:
+						cbField:=ARG_TO_CSVFIELD(F_STRING(GVL.data[nRow].field05),TRUE,ADR(field),SIZEOF(field));
+						
+				END_CASE
+				
+				IF cbField > 0 THEN
+					(* Add new field to the record buffer *)
+					fbWriter( 	pBuffer := ADR( record ), cbBuffer := SIZEOF( record ), putValue :='',  pValue := ADR( field ), cbValue := cbField,
+								bCRLF := ( nColumm = GVL.MAX_CSV_COLUMNS ) );(* bCRLF == TRUE => Write CRLF after the last field value *)
+					IF fbWriter.bOk THEN
+						fbWriter.eCmd 	:= eEnumCmd_Next;(* Write next field value *)
+						cbRecord 		:= cbRecord + fbWriter.cbWrite;(* Calculate the new record size *)
+					ELSE(* Error *)
+						step := 100;
+						RETURN;
+					END_IF
+				END_IF
+				
+			END_FOR
+			nRow:=nRow+1;
+			step:=40;
+		ELSE
+			step:=60;
+		END_IF
+	40:
+		fbFileWrite( bExecute := FALSE );
+		fbFileWrite( sNetId := '', hFile := hFile, pWriteBuff := ADR( record ), cbWriteLen := cbRecord, bExecute := TRUE );
+		step := 50;		
+	50:
+		fbFileWrite( bExecute := FALSE, bError => bErr);
+		IF NOT fbFileWrite.bBusy THEN
+			IF NOT fbFileWrite.bError THEN
+				step := 30;(* Write next record *)
+			ELSE(* Error *)
+				step := 100;
+			END_IF
+		END_IF
+	60:
+		fbFileClose( bExecute := FALSE );
+		fbFileClose( sNetId := '', hFile := hFile, bExecute := TRUE );
+		step := 70;	
+	70:
+		fbFileClose( bExecute := FALSE);
+		IF ( NOT fbFileClose.bBusy ) THEN
+			hFile := 0;
+			step := 100;
+		END_IF
+	100:
+		IF ( hFile <> 0 ) THEN
+			step := 60; (* Close the source file *)
+		ELSE
+			bBusy := FALSE;
+			step := 0;	(* Ready *)
+			IF iVezAtual>=iNumVezes THEN
+				iVezAtual:=0;
+			END_IF
+			iVezAtual:=iVezAtual+1;
+		END_IF
+END_CASE]]></ST>
+    </Implementation>
+    <LineIds Name="prgFileWrite">
+      <LineId Id="179" Count="101" />
+      <LineId Id="5" Count="0" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

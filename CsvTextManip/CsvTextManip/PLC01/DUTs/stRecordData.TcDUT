@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <DUT Name="stRecordData" Id="{f9026bae-3e77-47fd-b42d-c72b821c18fa}">
+    <Declaration><![CDATA[TYPE stRecordData :
+STRUCT
+	field01,field02,field03,field04,field05:T_MaxString;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

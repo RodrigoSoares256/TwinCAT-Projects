@@ -40,3 +40,8 @@ not provide it.
 it's basically just a sample
 * At the moment only E-Stop function block diagnose is implemented, however other function
 blocks can be easily inserted.
+
+**FileManip** => Sample on how to write and read files in text mode
+* Functionality to both read and write files to the disk in order to store information on .csv files format
+* Ideal for saving big tables and loading them afterwards
+* One might need to adapt in order to fit this project to some particular necessity.
