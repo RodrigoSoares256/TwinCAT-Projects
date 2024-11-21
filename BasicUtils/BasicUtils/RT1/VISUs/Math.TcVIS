@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <Visu Name="Math" Id="{6e67d57f-c320-4078-8c97-73aac621b48e}">
     <XmlArchive>
       <Data>
@@ -43,6 +43,8 @@
                 <v>96503679-9a28-4140-a127-bb44e8871eb4</v>
                 <v>GetElementIdArray</v>
                 <v>50235450-bf90-45c8-856b-45c9b5729117</v>
+                <v>GetElementName</v>
+                <v>19da6432-a10d-5304-abd7-3369eb3efe13</v>
                 <v>GetInitializeVersion</v>
                 <v>fbd33cb9-9b29-43d9-8ba7-10fd0f503861</v>
                 <v>GetInstance</v>
@@ -59,6 +61,8 @@
                 <v>2074183d-1332-435c-b8de-51af957e4caf</v>
                 <v>GetSurroundingRect</v>
                 <v>5a711372-876e-4def-958e-84e91c8e6145</v>
+                <v>GetTabOrderIdArray</v>
+                <v>49d2cbb1-50ed-5436-b14c-eb0a4bd9eb68</v>
                 <v>GetText</v>
                 <v>b9c70f12-f566-4dd7-a78a-f4b791925222</v>
                 <v>GetTextProperties</v>
@@ -87,6 +91,8 @@
                 <v>fdbae932-b555-412e-b3b4-47a2f5723d56</v>
                 <v>SetClientData</v>
                 <v>976cbd42-01a2-478e-b93f-6032a4c675a4</v>
+                <v>SetContainerSize</v>
+                <v>60a7bc99-2be1-550f-b952-e0a030b4d813</v>
                 <v>SetDialogInterface</v>
                 <v>115ef7bc-718b-47b8-9f12-3b971f37d0d2</v>
                 <v>SetResult</v>
@@ -97,6 +103,12 @@
                 <v>e77921bf-ba39-4e5d-9b4d-2fe6599abaac</v>
                 <v>Update</v>
                 <v>cf5a2be5-e431-48dc-9055-b07a81989697</v>
+              </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" ckt="String" cvt="Guid">
+                <v>__getContainer</v>
+                <v>a7e5b975-8c81-5ffc-8c75-0f42da611a92</v>
+                <v>__getVisu</v>
+                <v>d9c1b8a3-3224-5722-a84f-03d21f70945b</v>
               </d>
               <v n="FbName">"NotImportant"</v>
               <v n="FbGuid">{6e67d57f-c320-4078-8c97-73aac621b48e}</v>
@@ -114,6 +126,7 @@
                 <v>FB_Reinit</v>
                 <v>d21bf82d-7bae-42cc-950a-779d5b522a86</v>
               </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" />
               <v n="FbName">"NotImportant"</v>
               <v n="FbGuid">{86f1490a-6b47-435e-9beb-b676fc9f93a0}</v>
             </o>
@@ -146,11 +159,14 @@
                 <v>cff234ba-3905-40d8-9ab7-7569952088bd</v>
                 <v>ExecuteMouseUp</v>
                 <v>66543004-76ee-4b23-850e-3cc44202723f</v>
+                <v>ExecuteValueChanged</v>
+                <v>8ea4da12-d8d6-4904-9906-aa9d52f63669</v>
                 <v>GetElementInfo</v>
                 <v>e702fdd6-563e-43d6-9f56-27f163c2da87</v>
                 <v>Initialize</v>
                 <v>9732b718-2b6d-48c0-a898-67e292a47a39</v>
               </d>
+              <d n="FbProperties" t="CaseInsensitiveHashtable" />
               <v n="FbName">"NotImportant"</v>
               <v n="FbGuid">{6f66ff11-7389-4e04-8276-5219c5804ad1}</v>
             </o>
@@ -158,23 +174,10 @@
           </o>
           <v n="LastUsedIdForIdentifier">0</v>
           <o n="TextDocument" t="TextDocument">
-            <a n="TextLines" cet="TextLine">
-              <o>
-                <v n="Id">2L</v>
-                <n n="Tag" />
-                <v n="Text">"VAR_IN_OUT"</v>
-              </o>
-              <o>
-                <v n="Id">3L</v>
-                <n n="Tag" />
-                <v n="Text">"	"</v>
-              </o>
-              <o>
-                <v n="Id">1L</v>
-                <n n="Tag" />
-                <v n="Text">"END_VAR"</v>
-              </o>
-            </a>
+            <v n="TextBlobForSerialisation">"VAR_IN_OUT
+	
+END_VAR"</v>
+            <n n="LineInfoPersistence" />
           </o>
           <v n="GvlCreated">false</v>
           <n n="LMEntry" />
@@ -204,6 +207,7 @@
             </d2>
             <v n="Version">1</v>
           </o>
+          <n n="FrameInterfaceDataModel" />
         </o>
       </Data>
       <TypeList>
@@ -219,7 +223,6 @@
         <Type n="Int64">System.Int64</Type>
         <Type n="String">System.String</Type>
         <Type n="TextDocument">{f3878285-8e4f-490b-bb1b-9acbb7eb04db}</Type>
-        <Type n="TextLine">{a5de0b0b-1cb5-4913-ac21-9d70293ec00d}</Type>
         <Type n="VisualElemCollection">{ef9d0b20-c96e-48db-b361-2ded4063150e}</Type>
         <Type n="VisualElemList">{f285c9a3-7019-446b-b98c-ccec3a0af8fa}</Type>
         <Type n="VisualObject">{f18bec89-9fef-401d-9953-2f11739a6808}</Type>
@@ -239,6 +242,7 @@
             <v n="Internal">false</v>
             <v n="DialogIsOpaque">false</v>
             <v n="DialogIsOpaqueIsSet">false</v>
+            <v n="UseParentSizeProperties">false</v>
           </o>
         </Data>
         <TypeList>

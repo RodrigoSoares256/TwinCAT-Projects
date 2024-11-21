@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
+  <Task Name="VISU_TASK" Id="{20af3c13-c846-47e5-a5d9-6da3827e3c66}">
+    <!--CycleTime in micro seconds.-->
+    <CycleTime>200000</CycleTime>
+    <Priority>30</Priority>
+    <PouCall>
+      <Name>VisuElems.Visu_Prg</Name>
+    </PouCall>
+    <TaskFBGuid>{9639e0f3-cffc-4a85-8d23-64bfc532bca1}</TaskFBGuid>
+    <Fb_init>{75c861cd-fc10-40e8-bf71-a2ad8f70a7db}</Fb_init>
+    <Fb_exit>{efaa5b42-5a23-4ac0-b312-7e6985cfc4ee}</Fb_exit>
+    <CycleUpdate>{5b053b02-b1f4-4ef0-bfec-2b201a9c5651}</CycleUpdate>
+    <PostCycleUpdate>{c9f7ccb7-e744-490a-a931-9e4a08cb1efa}</PostCycleUpdate>
+  </Task>
+</TcPlcObject>

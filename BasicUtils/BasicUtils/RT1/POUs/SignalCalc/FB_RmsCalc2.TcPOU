@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
+  <POU Name="FB_RmsCalc2" Id="{cf369808-0421-43bf-9a9a-08da0a057627}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_RmsCalc2
+VAR_INPUT
+	in:LREAL;				//input sinal to calculate rms value
+	timePerCycle:LREAL;		//time per cycle in seconds
+END_VAR
+VAR_OUTPUT
+	result:LREAL;
+END_VAR
+VAR
+	ar:ARRAY[1..100] OF LREAL;
+	i: INT;
+	sum,mean,t:LREAL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[FOR i:= 100 TO 2 BY -1 DO
+	ar[i]:= ar[i-1];
+END_FOR
+ar[1]:=in;
+sum:=0;
+
+FOR i:= 1 TO 100 DO
+	sum:=sum + EXPT(ar[i],2);
+END_FOR
+mean:= sum/100;
+t:=100*timePerCycle;
+result:= SQRT((1/t)*mean);]]></ST>
+    </Implementation>
+    <LineIds Name="FB_RmsCalc2">
+      <LineId Id="1" Count="11" />
+    </LineIds>
+  </POU>
+</TcPlcObject>

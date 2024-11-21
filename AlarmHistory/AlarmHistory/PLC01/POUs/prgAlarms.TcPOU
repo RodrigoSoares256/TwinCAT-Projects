@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.11">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.13">
   <POU Name="prgAlarms" Id="{83097bec-8bbc-4645-9cc5-ef18e5c8c869}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM prgAlarms
 VAR
@@ -31,7 +31,7 @@ END_FOR
 readEvents(
 	sNetId:= '', 
 	bReadEvents:= bReadEvents, 
-	nLanguageId:= 1033, 
+	nLanguageId:= 1046, 
 	eDateAndTimeFormat:= E_DATEANDTIMEFORMAT.de_DE, 
 	tRefreshTime:=T#1S , 
 	tTimeout:=T#10S , 

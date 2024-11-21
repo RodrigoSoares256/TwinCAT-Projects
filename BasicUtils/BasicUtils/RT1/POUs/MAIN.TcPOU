@@ -1,13 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.8">
   <POU Name="MAIN" Id="{077b38a9-d9d0-4582-9d08-e7ea990f2571}" SpecialFunc="None">
     <Declaration><![CDATA[PROGRAM MAIN
 VAR
-	dt1:DT;
-	r1:REAL;
-	r2:LREAL;
-	i1:INT;
-	i2:UDINT;
+
+	sinGen:FB_CTRL_SIGNAL_GENERATOR;
+	mode: Tc2_ControllerToolbox.E_CTRL_MODE := Tc2_ControllerToolbox.E_CTRL_MODE.eCTRL_MODE_ACTIVE;
+	sine: LREAL;
+	paramSin: Tc2_ControllerToolbox.ST_CTRL_SIGNAL_GENERATOR_PARAMS := (tCtrlCycleTime := TIME#10MS, tTaskCycleTime := TIME#10MS, eSignalType := E_CTRL_SIGNAL_TYPE.eCTRL_SINUS, tCylceDuration := TIME#500MS, fAmplitude := 2);
+	rms1: FB_RMSCalc;
+	rms2: FB_RmsCalc2;
+	rmsOut1: LREAL;
+	rmsOut2: LREAL;
+	bResetRms: BOOL;
+	rPeriod: LREAL := 1;
 END_VAR
 ]]></Declaration>
     <Implementation>
@@ -16,6 +22,27 @@ prgTestAuxsFuns();
 prgTestStatistics();
 prgFilterTesting();
 prgMathTesting();
+
+
+sinGen(
+	fManValue:= , 
+	eMode:=mode , 
+	fOut=> sine, 
+	eState=> , 
+	eErrorId=> , 
+	bError=> , 
+	stParams:= paramSin);
+	
+
+
+rms1(
+	rInput:= sine, 
+	rPastTime:= 0.01, 
+	bReset:= bResetRms, 
+	rPeriod:=rPeriod , 
+	rRmsValue=> rmsOut1);
+	
+rms2(in:= sine, timePerCycle:= 0.01, result=> rmsOut2);
 ]]></ST>
     </Implementation>
     <LineIds Name="MAIN">
@@ -23,7 +50,12 @@ prgMathTesting();
       <LineId Id="11" Count="0" />
       <LineId Id="20" Count="0" />
       <LineId Id="29" Count="1" />
+      <LineId Id="40" Count="8" />
       <LineId Id="39" Count="0" />
+      <LineId Id="49" Count="0" />
+      <LineId Id="51" Count="6" />
+      <LineId Id="50" Count="0" />
+      <LineId Id="58" Count="2" />
     </LineIds>
   </POU>
 </TcPlcObject>

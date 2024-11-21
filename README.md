@@ -25,7 +25,6 @@ not provide it.
 
 **BasicUtils** => Functionalities to help with several situations
 
-
 **TempControlSample** => Sample use of the Temperature controller library
 * In this sample here we have a visualization which help us understand how to use the temperature controller library
 * It has been made so that one might be able to use it well for a heating application
@@ -41,7 +40,7 @@ it's basically just a sample
 * At the moment only E-Stop function block diagnose is implemented, however other function
 blocks can be easily inserted.
 
-**FileManip** => Sample on how to write and read files in text mode
+**CsvTextManip** => Sample on how to write and read csv files in text mode
 * Functionality to both read and write files to the disk in order to store information on .csv files format
 * Ideal for saving big tables and loading them afterwards
 * One might need to adapt in order to fit this project to some particular necessity.
