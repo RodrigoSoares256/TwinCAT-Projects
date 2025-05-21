@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="prgAlarmHnd" Id="{f26b5374-a568-40b0-920e-88ed8a1b457d}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgAlarmHnd
+VAR
+	evtReader: FB_ReadTc3Events;
+	actualEvts: ARRAY[1..80] OF ST_ReadEventW;
+	histEvts: ARRAY[1..80] OF ST_ReadEventW;
+	doClearEvts, doConfirmEvts, doRaiseEvt1, doRaiseEvt2, doRaiseEvt3, doClearTable:BOOL;
+	alarm1, alarm2, alarm3: FB_TcAlarm;
+	hr, hrLastErr: HRESULT;
+	raiseEvt1Trig, raiseEvt2Trig, raiseEvt3Trig:R_TRIG;
+	clearEvt1Trig, clearEvt2Trig, clearEvt3Trig: F_TRIG;
+	doInitNow:BOOL:=TRUE;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[IF doInitNow THEN
+	hr := alarm1.CreateEx(TC_Events.UserAlarms.evt01,TRUE,0);
+	IF failed(hr) THEN
+		hrLastErr:=hr;
+	END_IF
+	hr := alarm2.CreateEx(TC_Events.UserAlarms.evt02,TRUE,0);
+	IF failed(hr) THEN
+		hrLastErr:=hr;
+	END_IF
+	hr := alarm3.CreateEx(TC_Events.UserAlarms.evt03,TRUE,0);
+	IF failed(hr) THEN
+		hrLastErr:=hr;
+	END_IF
+	doInitNow:=FALSE;
+END_IF
+raiseEvt1Trig(CLK:= doRaiseEvt1);
+raiseEvt2Trig(CLK:= doRaiseEvt2);
+raiseEvt3Trig(CLK:= doRaiseEvt3 );
+clearEvt1Trig(CLK:= doRaiseEvt1);
+clearEvt2Trig(CLK:= doRaiseEvt2);
+clearEvt3Trig(CLK:= doRaiseEvt3);
+
+IF raiseEvt1Trig.Q THEN
+	alarm1.Raise(0);
+END_IF
+IF raiseEvt2Trig.Q THEN
+	alarm2.Raise(0);
+END_IF
+IF raiseEvt3trig.Q THEN
+	alarm3.Raise(0);
+END_IF
+IF clearEvt1Trig.Q THEN
+	alarm1.Clear(0,FALSE);
+END_IF
+IF clearEvt2Trig.Q THEN
+	alarm2.Clear(0,FALSE);
+END_IF
+IF clearEvt3Trig.Q THEN
+	alarm3.Clear(0,FALSE);
+END_IF
+IF doConfirmEvts THEN
+	alarm1.Confirm(0);
+	alarm2.Confirm(0);
+	alarm3.Confirm(0);
+END_IF
+
+evtReader(
+	bReadEvents:= TRUE, 
+	nLanguageID:=1031 , 
+	eDateAndTimeFormat:=E_DateAndTimeFormat.de_DE , 
+	bClearTable:= doClearTable, 
+	eMinSeverity:= , 
+	aEvents=>actualEvts , 
+	nNumberOfEvents=> , 
+	bError=> , 
+	hrErrorCode=> );]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

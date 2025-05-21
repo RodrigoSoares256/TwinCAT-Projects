@@ -44,3 +44,8 @@ blocks can be easily inserted.
 * Functionality to both read and write files to the disk in order to store information on .csv files format
 * Ideal for saving big tables and loading them afterwards
 * One might need to adapt in order to fit this project to some particular necessity.
+
+**Eventlogger4026** => This sample shows you how to use PLC-HMI with alarms on build 4026
+* TwinCAT 4026 no longer supports the old Event logger Functionality and therefore there
+* necessary to use the function blocks of the TC3_Eventlogger library to trigger the alarms
+* as well as the block FB_ReadTc3Events show the events on a table.

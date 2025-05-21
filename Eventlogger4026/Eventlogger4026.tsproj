@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+<TcSmProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.beckhoff.com/schemas/2012/07/TcSmProject" TcSmVersion="1.0" TcVersion="3.1.4026.16">
+	<Translations>
+		<Text TxtId="NewEventClass_DisplayText"/>
+		<Text TxtId="Primeiro evento"/>
+		<Text TxtId="Evento 02"/>
+		<Text TxtId="Isso é uma falha"/>
+		<Text TxtId="Terceiro Evento"/>
+		<Text TxtId="UserAlarmsEvent3_DisplayText"/>
+		<Text TxtId="Erro 04"/>
+		<Text TxtId="Erro de temperatura"/>
+	</Translations>
+	<DataTypes>
+		<DataType>
+			<Name GUID="{06076D50-EFBE-49C8-92F1-94BDA1C3601D}" PersistentType="true">ExtraEvents</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<EventId>
+				<Name Id="1">EvtExtra</Name>
+				<DisplayName TxtId=""><![CDATA[A special events]]></DisplayName>
+				<Severity>Verbose</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{6C91A913-1E39-422C-9CA0-113D146EBD0B}"/>
+				<Hide GUID="{336B66AC-1DEA-400F-BA75-0BA9B98591F2}"/>
+			</Hides>
+		</DataType>
+		<DataType>
+			<Name GUID="{3972339B-D977-46CB-A539-90D6A96EA501}" PersistentType="true">UserAlarms</Name>
+			<DisplayName TxtId=""><![CDATA[NewEventClass_DisplayText]]></DisplayName>
+			<EventId>
+				<Name Id="1">evt01</Name>
+				<DisplayName TxtId=""><![CDATA[Primeiro evento]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="2">evt02</Name>
+				<DisplayName TxtId=""><![CDATA[Evento 02]]></DisplayName>
+				<Severity>Error</Severity>
+				<Comment TxtId=""><![CDATA[Isso é uma falha]]></Comment>
+			</EventId>
+			<EventId>
+				<Name Id="4">evt03</Name>
+				<DisplayName TxtId=""><![CDATA[Terceiro Evento]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="3">tempAlarm</Name>
+				<DisplayName TxtId=""><![CDATA[UserAlarmsEvent3_DisplayText]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="5">Evt04</Name>
+				<DisplayName TxtId=""><![CDATA[Erro 04]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<EventId>
+				<Name Id="6">evt05</Name>
+				<DisplayName TxtId=""><![CDATA[Erro de temperatura]]></DisplayName>
+				<Severity>Error</Severity>
+			</EventId>
+			<Hides>
+				<Hide GUID="{19ED081C-757A-4FF1-8B66-0B0B85B1E174}"/>
+				<Hide GUID="{28773645-13D0-4955-ADC0-4F3CBEA0B8D1}"/>
+				<Hide GUID="{06266196-4815-4003-88E3-DF75BF8CC410}"/>
+				<Hide GUID="{11E82A52-F8D3-40A4-8BCA-EA28DF203528}"/>
+				<Hide GUID="{89146BCF-E325-4D67-84AD-B43443AF07C4}"/>
+				<Hide GUID="{21D5B59F-68DF-4421-B0E1-B767DD87D102}"/>
+				<Hide GUID="{A82D06FB-FD98-435F-A9DA-DD7A70856286}"/>
+				<Hide GUID="{2BD17750-16C0-4BAB-ACF7-6B795B0E7864}"/>
+			</Hides>
+		</DataType>
+	</DataTypes>
+	<Project ProjectGUID="{B8E6CB8F-89D5-4D7F-A2D0-2DA58E13A6AC}" TargetNetId="172.16.17.21.1.1" Target64Bit="true" ShowHideConfigurations="#x3c7">
+		<System>
+			<Settings MaxCpus="2">
+				<Cpu CpuId="1"/>
+			</Settings>
+			<Tasks>
+				<Task Id="3" Priority="20" CycleTime="100000" AmsPort="350" AdtTasks="true">
+					<Name>PlcTask</Name>
+				</Task>
+			</Tasks>
+		</System>
+		<Plc>
+			<Project GUID="{15AB8967-9CBE-4E71-9B99-4AE5C133AD07}" Name="PLC01" PrjFilePath="PLC01\PLC01.plcproj" TmcFilePath="PLC01\PLC01.tmc" ReloadTmc="true" AmsPort="851" FileArchiveSettings="#x000e" SymbolicMapping="true">
+				<Instance Id="#x08502000" TcSmClass="TComPlcObjDef" KeepUnrestoredLinks="2" TmcHash="{EA060CA1-A8A2-75EC-2C75-A2AC964FFC15}" TmcPath="PLC01\PLC01.tmc">
+					<Name>PLC01 Instance</Name>
+					<CLSID ClassFactory="TcPlc30">{08500001-0000-0000-F000-000000000064}</CLSID>
+					<Contexts>
+						<Context>
+							<Id>0</Id>
+							<Name>PlcTask</Name>
+							<ManualConfig>
+								<OTCID>#x02010030</OTCID>
+							</ManualConfig>
+							<Priority>20</Priority>
+							<CycleTime>10000000</CycleTime>
+						</Context>
+					</Contexts>
+					<TaskPouOids>
+						<TaskPouOid Prio="20" OTCID="#x08502001"/>
+					</TaskPouOids>
+				</Instance>
+			</Project>
+		</Plc>
+	</Project>
+</TcSmProject>
