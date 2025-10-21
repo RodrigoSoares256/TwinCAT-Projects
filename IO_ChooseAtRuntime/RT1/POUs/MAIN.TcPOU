@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="MAIN" Id="{9b50dab5-b168-4e01-8e83-028d1b870d14}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	el2008: FB_EL8DO;
+	outRefs: st_OutputNums;
+	outs: ARRAY [1..8] OF BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[el2008(outputRef:= outRefs, outputs:=outs );
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

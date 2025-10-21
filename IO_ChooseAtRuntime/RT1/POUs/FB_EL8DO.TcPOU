@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="FB_EL8DO" Id="{25762a0f-79e6-44d3-96c9-dbecb868f23e}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_EL8DO
+VAR_INPUT
+	outputRef: st_OutputNums;
+	outputs: ARRAY[1..8]OF BOOL;
+END_VAR
+VAR_OUTPUT
+END_VAR
+VAR
+	digOutputs AT %Q*:ST_EL8DO;
+	isValidConfig: BOOL;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[
+IF isValidConfig THEN
+	digOutputs.do1:=outputs[outputRef.out1];
+	digOutputs.do2:=outputs[outputRef.out2];
+	digOutputs.do3:=outputs[outputRef.out3];
+	digOutputs.do4:=outputs[outputRef.out4];
+	digOutputs.do5:=outputs[outputRef.out5];
+	digOutputs.do6:=outputs[outputRef.out6];
+	digOutputs.do7:=outputs[outputRef.out7];
+	digOutputs.do8:=outputs[outputRef.out8];
+END_IF]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

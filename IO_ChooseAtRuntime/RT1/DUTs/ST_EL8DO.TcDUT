@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="ST_EL8DO" Id="{5fb29b89-8c0a-45e2-b5a7-50bfa0d9d5ee}">
+    <Declaration><![CDATA[TYPE ST_EL8DO :
+STRUCT
+	do1,do2,do3,do4,do5,do6,do7,do8:BOOL;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

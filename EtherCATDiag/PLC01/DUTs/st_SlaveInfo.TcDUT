@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="st_SlaveInfo" Id="{534a147c-0fdd-47b9-92c9-9f2f4ac4eaa3}">
+    <Declaration><![CDATA[TYPE st_SlaveInfo :
+STRUCT
+	configDevName, scannedDevName:STRING;
+	addr:WORD;
+	devState:STRING;
+END_STRUCT
+END_TYPE]]></Declaration>
+  </DUT>
+</TcPlcObject>

@@ -49,3 +49,7 @@ blocks can be easily inserted.
 * TwinCAT 4026 no longer supports the old Event logger Functionality and therefore there
 * necessary to use the function blocks of the TC3_Eventlogger library to trigger the alarms
 * as well as the block FB_ReadTc3Events show the events on a table.
+
+**EtherCATDiag** => Diagnostic for EtherCAT
+* EtherCAT diagnostic based on the TC2_EtherCAT library, for doing diagnostics
+* without the diagnostic tool of the TwinCAT HMI.

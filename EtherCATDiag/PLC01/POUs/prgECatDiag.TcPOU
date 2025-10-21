@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <POU Name="prgECatDiag" Id="{1c82ac2a-bb24-45d7-ac25-9af593b92245}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM prgECatDiag
+VAR
+	masterDiag: FB_EcGetMasterState;		//
+	slaveState: FB_EcGetAllSlaveStates;     //
+	getConfSlaves: FB_EcGetConfSlaves;      //
+	getScannedSlaves: FB_EcGetScannedSlaves;//
+	netId AT %I*:AMSNETID;
+	bGetStates: BOOL;
+	trigGetState: R_TRIG;
+	iState: INT;
+	sNetId: Tc2_EtherCAT.T_AmsNetId;
+	state: WORD;
+	nSlave: UINT;
+	slavesBuffer: ARRAY[0..cMaxNumOfSlaves] OF ST_EcSlaveState;
+	configuredSlaves: ARRAY [0..cMaxNumOfSlaves] OF ST_EcSlaveConfigData;
+	nSlavesConf: UINT;
+	nSlavesScanned: UINT;
+	scannedSlaves: ARRAY [0..cMaxNumOfSlaves] OF ST_EcSlaveScannedData;
+	asScannedProductNames: ARRAY[0..cMaxNumOfSlaves] OF STRING;
+	i: UINT;
+	bOut AT %Q*:BOOL;
+	aSlaveInfo: ARRAY[0..cMaxNumOfSlaves] OF st_SlaveInfo;
+END_VAR
+VAR CONSTANT
+	cMaxNumOfSlaves: UINT:=30;	//change as you which
+	asEmptyStrings: ARRAY [0..cMaxNumOfSlaves] OF STRING;
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[trigGetState(CLK:=bGetStates);
+
+IF trigGetState.Q THEN
+	iState:=10;
+	M_ResetSlaveNames();
+END_IF
+sNetId:= F_CreateAmsNetId(nIds:= netId);
+CASE iState OF
+	0:
+		;
+	10:
+		masterDiag(
+			sNetId:= sNetId, 
+			bExecute:= TRUE, 
+			tTimeout:=T#3S , 
+			state=> state);
+		IF NOT masterDiag.bBusy AND NOT masterDiag.bError THEN
+			iState:=20;
+		END_IF
+	20:
+		slaveState(
+			sNetId:= sNetId, 
+			pStateBuf:= ADR(slavesBuffer), 
+			cbBufLen:= SIZEOF(slavesBuffer), 
+			bExecute:= TRUE,
+			nSlaves=>nSlave );
+		IF NOT slaveState.bBusy AND NOT slaveState.bError THEN
+			iState:=30;
+		END_IF
+	30:
+		getConfSlaves(
+			sNetId:= sNetId, 
+			pArrEcConfSlaveInfo:=ADR(configuredSlaves) , 
+			cbBufLen:= SIZEOF(configuredSlaves), 
+			bExecute:= TRUE, 
+			nSlaves=> nSlavesConf);
+		IF NOT getConfSlaves.bBusy AND NOT getConfSlaves.bError THEN
+			iState:=40;
+		END_IF
+	40:
+		getScannedSlaves(
+			bExecute:=TRUE , 
+			sNetId:= sNetId, 
+			pArrEcScannedSlaveInfo:=ADR(scannedSlaves) , 
+			cbBufLen:=SIZEOF(scannedSlaves) , 
+			nSlaves=>nSlavesScanned );
+		IF NOT getScannedSlaves.bBusy AND NOT getScannedSlaves.bError THEN
+			iState:=50;
+			FOR i:= 0 TO cMaxNumOfSlaves DO
+				IF scannedSlaves[i].stSlaveIdentity.productCode <> 0 THEN
+					//asScannedProductNames[i]:= ;
+					aSlaveInfo[i].configDevName:=configuredSlaves[i].sName;
+					aSlaveInfo[i].addr:=configuredSlaves[i].nAddr;
+					aSlaveInfo[i].scannedDevName:= F_ConvProductCodeToString(scannedSlaves[i].stSlaveIdentity);
+					aSlaveInfo[i].devState:= F_ConvSlaveStateToString(slavesBuffer[i]);
+				ELSE
+					EXIT;
+				END_IF
+			END_FOR
+		END_IF
+	50:
+		iState:=0;
+END_CASE
+bOut:=TRUE;
+]]></ST>
+    </Implementation>
+    <Method Name="M_ResetSlaveNames" Id="{77f8f28c-c12f-481b-9380-cf3685a902e2}">
+      <Declaration><![CDATA[METHOD M_ResetSlaveNames
+VAR_INPUT
+END_VAR
+]]></Declaration>
+      <Implementation>
+        <ST><![CDATA[memcpy(ADR(asScannedProductNames), ADR(asEmptyStrings),SIZEOF(asEmptyStrings));
+]]></ST>
+      </Implementation>
+    </Method>
+  </POU>
+</TcPlcObject>

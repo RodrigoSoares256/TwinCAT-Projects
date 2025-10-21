@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1">
+  <DUT Name="st_OutputNums" Id="{0d9686f7-9d9f-4d45-925b-e2b001bbe45e}">
+    <Declaration><![CDATA[TYPE st_OutputNums :
+STRUCT
+	out1:		INT:=1;
+	out2:		INT:=2;
+	out3:		INT:=3;
+	out4:       INT:=4;
+	out5:       INT:=5;
+	out6:       INT:=6;
+	out7:       INT:=7;
+	out8:       INT:=8;
+END_STRUCT
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

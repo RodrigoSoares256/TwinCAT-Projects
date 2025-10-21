@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.12">
   <POU Name="FB_BasicStatsFuns" Id="{3fa0b973-eb3e-4a78-90f3-2dea6596f72b}" SpecialFunc="None">
     <Declaration><![CDATA[FUNCTION_BLOCK FB_BasicStatsFuns
 VAR_INPUT
